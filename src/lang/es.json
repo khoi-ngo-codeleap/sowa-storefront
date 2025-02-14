@@ -1,0 +1,20 @@
+{
+  "app.description": [
+    {
+      "type": 0,
+      "value": "Esta aplicación es sobre preparar la estructura del proyecto para JTL HUB"
+    }
+  ],
+  "app.footer": [
+    {
+      "type": 0,
+      "value": "This is footer for now ???"
+    }
+  ],
+  "app.greeting": [
+    {
+      "type": 0,
+      "value": "Hola"
+    }
+  ]
+}
