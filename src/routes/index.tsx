@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import appIcon from "@/assets/jtl-logo.svg";
+import CustomerTimeline from "@/features/customer/components/customer-detail/timeline-section/CustomerTimeline";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -22,6 +23,7 @@ function RouteComponent() {
         </div>
       </header>
       <div className="flex-1">
+        <CustomerTimeline />
         <div className="max-w-screen-md mx-auto">
           {/* hero text */}
           <div className="flex flex-col py-6 gap-y-6 items-center justify-center">

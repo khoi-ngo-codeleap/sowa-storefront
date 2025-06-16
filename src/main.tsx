@@ -1,9 +1,25 @@
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
+import * as Sentry from "@sentry/react";
 import App from "@/app/App";
+import "./configs/instrument";
+import "./index.css";
 
-createRoot(document.getElementById("root")!).render(
-  // <StrictMode>
-  <App />
-  // </StrictMode>
+createRoot(document.getElementById("root")!, {
+  // Callback called when an error is thrown and not caught by an ErrorBoundary.
+  onUncaughtError: Sentry.reactErrorHandler((error, errorInfo) => {
+    console.warn("Uncaught error", error, errorInfo.componentStack);
+  }),
+  // Callback called when React catches an error in an ErrorBoundary.
+  onCaughtError: (...args) => {
+    console.log("Ee dinhs", ...args);
+    const handler = Sentry.reactErrorHandler();
+    handler(...args);
+  },
+  // Callback called when React automatically recovers from errors.
+  onRecoverableError: Sentry.reactErrorHandler(),
+}).render(
+  <StrictMode>
+    <App />
+  </StrictMode>
 );

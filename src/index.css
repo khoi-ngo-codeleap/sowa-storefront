@@ -93,9 +93,12 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border text-sm;
   }
   body {
     @apply bg-background text-foreground;
   }
+}
+#jotai-devtools-shell {
+  pointer-events: auto !important;
 }
