@@ -6,10 +6,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { closeModalAtom, modalAtom } from "../../domain/state/modal";
-import EditCustomerContactForm from "../form/EditCustomerContactForm";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import EditCustomerNoteForm from "../form/EditCustomerNoteForm";
 
-const EditCustomerContactModal = () => {
+const EditNoteModal = () => {
   const { type, payload: draftCustomer } = useAtomValue(modalAtom);
   const closeModal = useSetAtom(closeModalAtom);
 
@@ -20,20 +20,16 @@ const EditCustomerContactModal = () => {
   };
 
   return (
-    <Dialog open={type === "edit_contact"} onOpenChange={handleOpenChange}>
+    <Dialog open={type === "edit_note"} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[480px]">
         <DialogHeader>
-          <DialogTitle>Edit customer</DialogTitle>
-          <DialogDescription>
-            Edit customer name, email, phone number, and default address.
-          </DialogDescription>
+          <DialogTitle>Edit note</DialogTitle>
+          <DialogDescription>Edit the customer note below.</DialogDescription>
         </DialogHeader>
-        {type === "edit_contact" && (
-          <EditCustomerContactForm value={draftCustomer} />
-        )}
+        {type === "edit_note" && <EditCustomerNoteForm value={draftCustomer} />}
       </DialogContent>
     </Dialog>
   );
 };
 
-export default EditCustomerContactModal;
+export default EditNoteModal;

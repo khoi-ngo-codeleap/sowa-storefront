@@ -11,11 +11,7 @@ createRoot(document.getElementById("root")!, {
     console.warn("Uncaught error", error, errorInfo.componentStack);
   }),
   // Callback called when React catches an error in an ErrorBoundary.
-  onCaughtError: (...args) => {
-    console.log("Ee dinhs", ...args);
-    const handler = Sentry.reactErrorHandler();
-    handler(...args);
-  },
+  onCaughtError: Sentry.reactErrorHandler(),
   // Callback called when React automatically recovers from errors.
   onRecoverableError: Sentry.reactErrorHandler(),
 }).render(

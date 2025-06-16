@@ -1,9 +1,6 @@
-import { getCustomers } from "@/apis/supabase/customer";
 import { useQuery } from "@tanstack/react-query";
+import { customerQueries } from "./customerQueries";
 
 export default function useCustomersQuery() {
-  return useQuery({
-    queryKey: ["customers"],
-    queryFn: getCustomers,
-  });
+  return useQuery(customerQueries.list());
 }

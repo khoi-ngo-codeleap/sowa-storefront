@@ -12,7 +12,11 @@ import { CustomerEvent } from "@/types/event";
 import { Card } from "@/components/ui/card";
 
 function FormattedTime({ time }: { time: string }) {
-  return <span>{dayjs(time).local().format(SupportedFormats.TIME_SHORT)}</span>;
+  return (
+    <span className="min-w-fit">
+      {dayjs(time).local().format(SupportedFormats.TIME_SHORT)}
+    </span>
+  );
 }
 
 export function CustomerCreateTimelineEvent(
@@ -130,6 +134,30 @@ export function CustomerUpdateNoteTimelineEvent(
           <div>{event.payload.original}</div>
         </div>
       </TimelineItemContent>
+    </TimelineItem>
+  );
+}
+
+export function CustomerUpdateTimelineEvent(
+  event: Extract<CustomerEvent, { type: "update" }>
+) {
+  return (
+    <TimelineItem>
+      <TimelineItemHeader>
+        {event.author.name} changed customer's {event.payload.field} from{" "}
+        {event.payload.original} to {event.payload.new}.
+        <FormattedTime time={event.createdAt} />
+      </TimelineItemHeader>
+      {/* <TimelineItemContent>
+        <div className="py-2">
+          <div className="font-semibold">New note:</div>
+          <div>{event.payload.new}</div>
+        </div>
+        <div>
+          <div className="font-semibold">Old note:</div>
+          <div>{event.payload.original}</div>
+        </div>
+      </TimelineItemContent> */}
     </TimelineItem>
   );
 }

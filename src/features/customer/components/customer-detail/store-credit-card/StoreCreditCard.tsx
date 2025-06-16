@@ -1,5 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Pencil, ChevronRight } from "lucide-react";
 
 const amount = 326;
@@ -10,9 +15,16 @@ const StoreCreditCard = () => {
       <CardContent className="px-3 py-3 space-y-1.5">
         <div className="flex items-center justify-between">
           <CardTitle>Store credit</CardTitle>
-          <Button variant="ghost" size="iconSm">
-            <Pencil className="w-4 h-4 cursor-pointer" />
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="iconSm">
+                <Pencil className="w-4 h-4 cursor-pointer" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Coming soon</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
         <div className="flex items-center justify-between cursor-pointer">
           <div>${amount.toLocaleString()}</div>

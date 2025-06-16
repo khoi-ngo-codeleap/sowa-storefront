@@ -8,5 +8,10 @@ export const customerContactSchema = z.object({
   phone: z.string().min(1, { message: "Phone number is required" }),
 });
 
-
 export type CustomerContactValue = z.infer<typeof customerContactSchema>;
+
+export const customerNoteSchema = z.object({
+  note: z.string().min(1, { message: "Note is required" }),
+});
+
+export type CustomerNoteValue = z.infer<typeof customerNoteSchema>;

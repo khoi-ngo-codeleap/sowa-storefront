@@ -5,7 +5,7 @@ const TimelineSection = () => {
   return (
     <div>
       <div className="font-semibold leading-none tracking-tight mb-4">
-        Last order placed
+        Timeline
       </div>
       <div>
         <CommentInput />

@@ -1,7 +1,8 @@
 import { CustomerEvent } from "@/types/event";
 import supabase from "../supabase";
+import { Tables } from "@/types/database.types";
 
-export const getCustomers = async () => {
+export const getCustomers = async (filters: any) => {
   const { data, error } = await supabase.from("customer").select(
     `
       id,
@@ -131,6 +132,7 @@ type CustomerContactSetInput = {
   email: string;
   phone: string;
 };
+
 export const updateCustomerContact = async (input: CustomerContactSetInput) => {
   const { id, ...updateSet } = input;
   const { data, error } = await supabase
@@ -138,6 +140,40 @@ export const updateCustomerContact = async (input: CustomerContactSetInput) => {
     .update(updateSet)
     .eq("id", id)
     .select();
+
+  if (error) throw error;
+  return data;
+};
+
+type UpdateCustomerParams = {
+  id: string;
+  updateSet: Partial<Tables<"customer">>;
+};
+export const updateCustomer = async ({
+  id,
+  updateSet,
+}: UpdateCustomerParams) => {
+  const { data, error } = await supabase
+    .from("customer")
+    .update(updateSet)
+    .eq("id", id)
+    .select();
+
+  if (error) throw error;
+  return data;
+};
+
+type AddCommentParams = {
+  id: string;
+  message: string;
+}
+export const addComment = async ({id, message}:AddCommentParams) => {
+  const { data, error } = await supabase.from("customer_event").insert({
+    customer_id: id,
+    type: "comment",
+    payload: { message },
+  });
+
   if (error) throw error;
   return data;
 };

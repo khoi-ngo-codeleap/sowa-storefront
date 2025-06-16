@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
-import useCustomerQuery from "@/features/customer/domain/queries/useCustomerQuery";
+import useCustomerDetailQuery from "@/features/customer/domain/queries/useCustomerDetailQuery";
 
 const Nav = () => {
   const router = useRouter();
-  const { data: customer } = useCustomerQuery();
+  const { data: customer } = useCustomerDetailQuery();
   return (
     <div className="flex items-center gap-3">
       <Button variant="ghost" size="icon" onClick={() => router.history.back()}>

@@ -12,6 +12,7 @@ import StatsBar from "../components/customer-detail/stats-bar/StatsBar";
 import CustomerCard from "../components/customer-detail/customer-card/CustomerCard";
 import ActionBar from "../components/customer-detail/action-bar/ActionBar";
 import EditCustomerContactModal from "../components/edit-contact-modal/EditCustomerContactModal";
+import EditNoteModal from "../components/edit-note-modal/EditNoteModal";
 
 const CustomerDetail = () => {
   return (
@@ -33,6 +34,7 @@ const CustomerDetail = () => {
         </div>
       </PageContent>
       <EditCustomerContactModal />
+      <EditNoteModal />
     </PageWrapper>
   );
 };

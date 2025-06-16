@@ -9,6 +9,7 @@ import {
   CustomerCreditedTimelineEvent,
   CustomerEmailSentTimelineEvent,
   CustomerUpdateNoteTimelineEvent,
+  CustomerUpdateTimelineEvent,
 } from "./CustomerTimelineEvents";
 
 const CustomerTimeline = () => {
@@ -42,6 +43,8 @@ const CustomerTimeline = () => {
             );
           case "credited":
             return <CustomerCreditedTimelineEvent key={event.id} {...event} />;
+          case "update":
+            return <CustomerUpdateTimelineEvent key={event.id} {...event} />;
           default:
             return null;
         }

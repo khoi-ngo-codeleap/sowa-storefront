@@ -1,17 +1,11 @@
 import { toast } from "@/hooks/use-toast";
-import {
-  MutationCache,
-  Query,
-  QueryCache,
-  QueryClient,
-} from "@tanstack/react-query";
+import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
 import * as Sentry from "@sentry/react";
 import { isAxiosError } from "axios";
 
 declare module "@tanstack/react-query" {
   interface Register {
     mutationMeta: {
-      invalidateQuery?: Query;
       successMsg?: string;
       errorMsg?: string;
     };
@@ -19,6 +13,7 @@ declare module "@tanstack/react-query" {
 }
 
 const queryClient = new QueryClient({
+  /** config query cache */
   queryCache: new QueryCache({
     onError: (error) => {
       if (!isAxiosError(error)) {
@@ -28,6 +23,7 @@ const queryClient = new QueryClient({
 
       // all error should be logged on sentry
       Sentry.captureException(error);
+      
       if ((error.response?.status ?? 0) >= 500) {
         toast({
           title: "Oops! Something went wrong.",
@@ -36,20 +32,26 @@ const queryClient = new QueryClient({
       }
     },
   }),
+  /** config mutation cache */
   mutationCache: new MutationCache({
     onSuccess: (_data, _variables, _context, mutation) => {
-      const successMsg = mutation.meta?.successMsg;
+      const { successMsg } = mutation.meta || {};
       if (successMsg) {
-        toast({ title: successMsg });
+        toast({ title: successMsg, variant: "success" });
       }
     },
     onError: (_error, _variables, _context, mutation) => {
       const errorMsg = mutation.meta?.errorMsg;
       if (errorMsg) {
-        toast({ title: errorMsg });
+        toast({ title: errorMsg, variant: "destructive" });
       }
     },
-  })
+  }),
+  defaultOptions: {
+    queries: {
+      retry: 2
+    }
+  }
 });
 
 export default queryClient;

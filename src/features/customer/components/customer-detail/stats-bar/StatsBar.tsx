@@ -1,9 +1,9 @@
 import dayjs from "@/lib/dayjs";
 import { Card, CardContent } from "@/components/ui/card";
-import useCustomerQuery from "@/features/customer/domain/queries/useCustomerQuery";
+import useCustomerDetailQuery from "@/features/customer/domain/queries/useCustomerDetailQuery";
 
 const StatsBar = () => {
-  const { data: customer } = useCustomerQuery();
+  const { data: customer } = useCustomerDetailQuery();
   return (
     <Card className="w-full">
       <CardContent className="p-6 space-y-4">

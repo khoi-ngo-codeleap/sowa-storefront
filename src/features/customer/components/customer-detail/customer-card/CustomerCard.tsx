@@ -1,10 +1,10 @@
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { CheckCircle, Globe, Mail, MapPin, Phone, XCircle } from "lucide-react";
-import useCustomerQuery from "@/features/customer/domain/queries/useCustomerQuery";
+import useCustomerDetailQuery from "@/features/customer/domain/queries/useCustomerDetailQuery";
 import CustomerCardAction from "./CustomerCardAction";
 
 const CustomerCard = () => {
-  const { data: customer } = useCustomerQuery();
+  const { data: customer } = useCustomerDetailQuery();
   return (
     <Card className="w-full max-w-md rounded-2xl">
       <CardContent className="px-3 py-4 space-y-4">

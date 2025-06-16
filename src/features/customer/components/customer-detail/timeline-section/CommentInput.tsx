@@ -6,17 +6,35 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Smile, AtSign, Hash, Link } from "lucide-react";
+import useAddComment from "@/features/customer/domain/command/useAddComment";
+import { toast } from "@/hooks/use-toast";
+import { useCustomerId } from "@/providers/CustomerIdContext";
+import { Smile, AtSign, Hash, Link, Loader } from "lucide-react";
 import { useState } from "react";
 
 const CommentInput = () => {
+  const customerId = useCustomerId();
+  const { mutate, isPending } = useAddComment();
   const [comment, setComment] = useState("");
 
   const handleSubmit = () => {
-    if (comment.trim()) {
-      console.log("Submitted:", comment);
-      setComment("");
+    if (!comment.trim()) {
+      toast({
+        title: "Empty comment",
+        description: "It seems like you haven't entered a comment",
+      });
+      return;
     }
+
+    mutate(
+      {
+        id: customerId,
+        message: comment,
+      },
+      {
+        onSuccess: () => setComment(""),
+      }
+    );
   };
 
   return (
@@ -54,7 +72,12 @@ const CommentInput = () => {
             ))}
           </div>
           <div>
-            <Button size="sm" disabled={!comment.trim()} onClick={handleSubmit}>
+            <Button
+              size="sm"
+              disabled={!comment.trim() || isPending}
+              onClick={handleSubmit}
+            >
+              {isPending && <Loader className="mr-2 h-4 w-4 animate-spin" />}
               Post
             </Button>
           </div>

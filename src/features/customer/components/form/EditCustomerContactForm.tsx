@@ -5,13 +5,12 @@ import { CustomerDetail } from "@/types/domain";
 import { customerContactSchema, CustomerContactValue } from "./schema";
 import { Form } from "@/components/ui/form";
 import { SelectOption } from "@/types/select";
-import { useUpdateCustomerContact } from "../../domain/command/updateCustomerContact";
 import CustomerContactSection from "./CustomerContactSection";
 import { useSetAtom } from "jotai";
 import { closeModalAtom } from "../../domain/state/modal";
 import { Button } from "@/components/ui/button";
-import { DialogFooter } from "@/components/ui/dialog";
 import { Loader } from "lucide-react";
+import useUpdateCustomer from "../../domain/command/useUpdateCustomer";
 
 const localeOptions: SelectOption[] = [
   { label: "United States", value: "en-US" },
@@ -24,17 +23,14 @@ const localeOptions: SelectOption[] = [
 ];
 
 interface CustomerContactFormProps {
-  value: Pick<
-    CustomerDetail,
-    "id" | "firstName" | "lastName" | "email" | "phone" | "locale"
-  >;
+  value: CustomerDetail;
 }
 
 const EditCustomerContactForm: React.FC<CustomerContactFormProps> = ({
   value,
 }) => {
   const closeModal = useSetAtom(closeModalAtom);
-  const { mutate, isPending } = useUpdateCustomerContact();
+  const { mutate, isPending } = useUpdateCustomer();
 
   const form = useForm<CustomerContactValue>({
     defaultValues: value
@@ -52,8 +48,10 @@ const EditCustomerContactForm: React.FC<CustomerContactFormProps> = ({
     mutate(
       {
         id: value.id,
-        display_name: `${values.first_name} ${values.last_name}`,
-        ...values,
+        updateSet: {
+          display_name: `${values.first_name} ${values.last_name}`,
+          ...values,
+        },
       },
       {
         onSuccess: () => closeModal(),
@@ -65,7 +63,7 @@ const EditCustomerContactForm: React.FC<CustomerContactFormProps> = ({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <CustomerContactSection localeOptions={localeOptions} />
-        <DialogFooter>
+        <div className="flex justify-end gap-2">
           <Button variant="outline" onClick={closeModal} disabled={isPending}>
             Cancel
           </Button>
@@ -73,7 +71,7 @@ const EditCustomerContactForm: React.FC<CustomerContactFormProps> = ({
             {isPending && <Loader className="mr-2 h-4 w-4 animate-spin" />}
             Save
           </Button>
-        </DialogFooter>
+        </div>
       </form>
     </Form>
   );

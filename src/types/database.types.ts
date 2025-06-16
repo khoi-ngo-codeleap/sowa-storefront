@@ -109,24 +109,24 @@ export type Database = {
       }
       customer_event: {
         Row: {
-          author_id: string
-          created_at: string
+          author_id: string | null
+          created_at: string | null
           customer_id: string
           id: string
           payload: Json | null
           type: string
         }
         Insert: {
-          author_id?: string
-          created_at: string
+          author_id?: string | null
+          created_at?: string | null
           customer_id?: string
           id?: string
           payload?: Json | null
           type: string
         }
         Update: {
-          author_id?: string
-          created_at?: string
+          author_id?: string | null
+          created_at?: string | null
           customer_id?: string
           id?: string
           payload?: Json | null

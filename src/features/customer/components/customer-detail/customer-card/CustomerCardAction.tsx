@@ -7,11 +7,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Ellipsis } from "lucide-react";
 import { useSetAtom } from "jotai";
-import useCustomerQuery from "@/features/customer/domain/queries/useCustomerQuery";
+import useCustomerDetailQuery from "@/features/customer/domain/queries/useCustomerDetailQuery";
 import { openModalAtom } from "@/features/customer/domain/state/modal";
 
 const CustomerCardAction = () => {
-  const { data: customer } = useCustomerQuery();
+  const { data: customer } = useCustomerDetailQuery();
   const editCustomer = useSetAtom(openModalAtom);
 
   return (
@@ -29,13 +29,13 @@ const CustomerCardAction = () => {
         >
           <span>Edit contact information</span>
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem disabled>
           <span>Manage addresses</span>
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem disabled>
           <span>Edit tax details</span>
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem disabled>
           <span>Add to company</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

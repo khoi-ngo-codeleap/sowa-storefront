@@ -5,13 +5,15 @@ export type ModalType =
   | "edit_contact"
   | "manage_address"
   | "edit_marketing_setting"
-  | "edit_tax";
+  | "edit_tax"
+  | "edit_note";
 
 export type ModalPayload = {
   edit_contact: CustomerDetail;
   manage_address: { id: string };
   edit_marketing_setting: { prefillCustomerId?: string };
   edit_tax: { invoiceId: string };
+  edit_note: CustomerDetail;
 };
 
 export type ModalState =

@@ -2,7 +2,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import useCustomerQuery from "@/features/customer/domain/queries/useCustomerQuery";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import useCustomerDetailQuery from "@/features/customer/domain/queries/useCustomerDetailQuery";
 import { Pencil, XIcon } from "lucide-react";
 import { useMemo } from "react";
 
@@ -22,7 +27,7 @@ function TagItem({ name, ...props }: TagItemProps) {
 }
 
 const TagCard = () => {
-  const { data: customer } = useCustomerQuery();
+  const { data: customer } = useCustomerDetailQuery();
   const tags = useMemo(() => {
     return customer.tags.filter((tag) => tag.enabled);
   }, [customer]);
@@ -31,9 +36,16 @@ const TagCard = () => {
       <CardContent className="px-3 py-3 space-y-1.5">
         <div className="flex items-center justify-between">
           <CardTitle>Tags</CardTitle>
-          <Button variant="ghost" size="iconSm">
-            <Pencil className="w-4 h-4 cursor-pointer" />
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="iconSm">
+                <Pencil className="w-4 h-4 cursor-pointer" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Coming soon</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
         <div className="mb-1 space-y-2">
           <Input />
