@@ -3,7 +3,6 @@ import TimeLineSkeleton from "./TimeLineSkeleton";
 import { Timeline } from "@/components/ui/timeline";
 import {
   CustomerCommentTimelineEvent,
-  CustomerCreateNoteTimelineEvent,
   CustomerCreateOrderTimelineEvent,
   CustomerCreateTimelineEvent,
   CustomerCreditedTimelineEvent,
@@ -33,10 +32,6 @@ const CustomerTimeline = () => {
             );
           case "email_sent_confirming_order":
             return <CustomerEmailSentTimelineEvent key={event.id} {...event} />;
-          case "create_note":
-            return (
-              <CustomerCreateNoteTimelineEvent key={event.id} {...event} />
-            );
           case "update_note":
             return (
               <CustomerUpdateNoteTimelineEvent key={event.id} {...event} />

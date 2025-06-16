@@ -10,6 +10,11 @@ import { Trash2 } from "lucide-react";
 import dayjs, { SupportedFormats } from "@/lib/dayjs";
 import { CustomerEvent } from "@/types/event";
 import { Card } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 function FormattedTime({ time }: { time: string }) {
   return (
@@ -48,9 +53,16 @@ export function CustomerCommentTimelineEvent(
           </div>
           <div>{event.payload.message}</div>
         </div>
-        <Button size="icon" variant="ghost">
-          <Trash2 size={16} />
-        </Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button size="icon" variant="ghost">
+              <Trash2 size={16} />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Coming soon</p>
+          </TooltipContent>
+        </Tooltip>
       </Card>
     </TimelineItem>
   );
@@ -92,27 +104,6 @@ export function CustomerEmailSentTimelineEvent(
   );
 }
 
-export function CustomerCreateNoteTimelineEvent(
-  event: Extract<CustomerEvent, { type: "create_note" }>
-) {
-  return (
-    <TimelineItem collapsible>
-      <TimelineItemHeader>
-        <TimelineItemContentTrigger>
-          {event.author.name} added a note to this customer
-        </TimelineItemContentTrigger>
-        <FormattedTime time={event.createdAt} />
-      </TimelineItemHeader>
-      <TimelineItemContent>
-        <div>
-          <div className="font-semibold">New note:</div>
-          <div>{event.payload.original}</div>
-        </div>
-      </TimelineItemContent>
-    </TimelineItem>
-  );
-}
-
 export function CustomerUpdateNoteTimelineEvent(
   event: Extract<CustomerEvent, { type: "update_note" }>
 ) {
@@ -120,7 +111,8 @@ export function CustomerUpdateNoteTimelineEvent(
     <TimelineItem collapsible>
       <TimelineItemHeader>
         <TimelineItemContentTrigger>
-          {event.author.name} changed this customer's note.
+          {event.author.name} {event.payload.original ? "changed" : "created"}{" "}
+          this customer's note.
         </TimelineItemContentTrigger>
         <FormattedTime time={event.createdAt} />
       </TimelineItemHeader>
@@ -129,10 +121,12 @@ export function CustomerUpdateNoteTimelineEvent(
           <div className="font-semibold">New note:</div>
           <div>{event.payload.new}</div>
         </div>
-        <div>
-          <div className="font-semibold">Old note:</div>
-          <div>{event.payload.original}</div>
-        </div>
+        {event.payload.original && (
+          <div>
+            <div className="font-semibold">Old note:</div>
+            <div>{event.payload.original}</div>
+          </div>
+        )}
       </TimelineItemContent>
     </TimelineItem>
   );
