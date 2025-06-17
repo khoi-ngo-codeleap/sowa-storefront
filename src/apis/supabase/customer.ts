@@ -2,30 +2,6 @@ import { CustomerEvent } from "@/types/event";
 import supabase from "../supabase";
 import { Tables } from "@/types/database.types";
 
-// let { data: customer, error } = await supabase
-//   .from('customer')
-//   .select("*")
-
-//   // Filters
-//   .eq('column', 'Equal to')
-//   .gt('column', 'Greater than')
-//   .lt('column', 'Less than')
-//   .gte('column', 'Greater than or equal to')
-//   .lte('column', 'Less than or equal to')
-//   .like('column', '%CaseSensitive%')
-//   .ilike('column', '%CaseInsensitive%')
-//   .is('column', null)
-//   .in('column', ['Array', 'Values'])
-//   .neq('column', 'Not equal to')
-
-//   // Arrays
-//   .contains('array_column', ['array', 'contains'])
-//   .containedBy('array_column', ['contained', 'by'])
-
-//   // Logical operators
-//   .not('column', 'like', 'Negate filter')
-//   .or('some_column.eq.Some value, other_column.eq.Other value')
-
 export type CustomerFilters = {
   state?: "ENABLED" | "DISABLED"
 };
@@ -51,7 +27,7 @@ export const getCustomers = async (filters: CustomerFilters) => {
     {
       count: "exact",
     }
-  );
+  ).order("email", { ascending: false });
   if (filters.state) {
     query.eq("state", filters.state);
   }

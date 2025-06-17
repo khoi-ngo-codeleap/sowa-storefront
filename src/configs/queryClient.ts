@@ -7,7 +7,7 @@ declare module "@tanstack/react-query" {
   interface Register {
     mutationMeta: {
       successMsg?: string;
-      errorMsg?: string;
+      errorMsg?: string | Record<number, string>;
     };
   }
 }
@@ -16,19 +16,12 @@ const queryClient = new QueryClient({
   /** config query cache */
   queryCache: new QueryCache({
     onError: (error) => {
-      if (!isAxiosError(error)) {
-        Sentry.captureException(error.message);
-        return;
-      }
-
-      // all error should be logged on sentry
       Sentry.captureException(error);
-      
-      if ((error.response?.status ?? 0) >= 500) {
-        toast({
-          title: "Oops! Something went wrong.",
-          description: "Please try again later.",
-        });
+      if (isAxiosError(error) && error.response) {
+        // only show toast for server error
+        if (error.response.status >= 500) {
+          toast({title: "Oops! Something went wrong."});
+        }
       }
     },
   }),
@@ -40,18 +33,31 @@ const queryClient = new QueryClient({
         toast({ title: successMsg, variant: "success" });
       }
     },
-    onError: (_error, _variables, _context, mutation) => {
-      const errorMsg = mutation.meta?.errorMsg;
-      if (errorMsg) {
-        toast({ title: errorMsg, variant: "destructive" });
+    onError: (error, _variables, _context, mutation) => {
+      Sentry.captureException(error);
+      const { errorMsg } = mutation.meta || {};
+
+      if (isAxiosError(error) && errorMsg) {
+        // one message for every status
+        if (typeof errorMsg === "string") {
+          toast({ title: errorMsg , variant: "destructive" });
+        }
+
+        // delicate error messages base on status
+        if (typeof errorMsg === "object" && error.response) {
+          const message = errorMsg[error.response.status];
+          if (message) {
+            toast({ title: message , variant: "destructive" });
+          }
+        }
       }
     },
   }),
   defaultOptions: {
     queries: {
-      retry: 2
-    }
-  }
+      retry: 2,
+    },
+  },
 });
 
 export default queryClient;

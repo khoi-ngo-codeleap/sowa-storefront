@@ -9,16 +9,18 @@ const customerTableColumns: ColumnDef<Customer>[] = [
   {
     accessorKey: "name",
     header: "Name",
-    cell: ({ row }) => (
-      <span className="font-medium">
-        <Link
-          to="/customers/$customerId"
-          params={{ customerId: row.original.id }}
-        >
-          {row.original.displayName}
-        </Link>
-      </span>
-    ),
+    cell: ({ row }) => {
+      return (
+        <span className="font-medium">
+          <Link
+            to="/customers/$customerId"
+            params={{ customerId: row.original.id }}
+          >
+            {row.original.displayName}
+          </Link>
+        </span>
+      );
+    },
   },
   {
     accessorKey: "email",
@@ -49,11 +51,12 @@ const customerTableColumns: ColumnDef<Customer>[] = [
     header: "Status",
     cell: ({ row }) => {
       const variants: Record<string, string> = {
-        DISABLED: "bg-secondary text-secondary-foreground",
-        ENABLED: "bg-green-100 text-green-600",
+        DISABLED:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ENABLED: "bg-green-100 text-green-600 hover:bg-green-200",
       };
       return (
-        <Badge className={cn(variants[row.original.state])}>
+        <Badge className={cn("cursor-pointer", variants[row.original.state])}>
           {row.original.state}
         </Badge>
       );
