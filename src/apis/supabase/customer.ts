@@ -2,12 +2,42 @@ import { CustomerEvent } from "@/types/event";
 import supabase from "../supabase";
 import { Tables } from "@/types/database.types";
 
-export const getCustomers = async (filters: any) => {
-  const { data, error } = await supabase.from("customer").select(
+// let { data: customer, error } = await supabase
+//   .from('customer')
+//   .select("*")
+
+//   // Filters
+//   .eq('column', 'Equal to')
+//   .gt('column', 'Greater than')
+//   .lt('column', 'Less than')
+//   .gte('column', 'Greater than or equal to')
+//   .lte('column', 'Less than or equal to')
+//   .like('column', '%CaseSensitive%')
+//   .ilike('column', '%CaseInsensitive%')
+//   .is('column', null)
+//   .in('column', ['Array', 'Values'])
+//   .neq('column', 'Not equal to')
+
+//   // Arrays
+//   .contains('array_column', ['array', 'contains'])
+//   .containedBy('array_column', ['contained', 'by'])
+
+//   // Logical operators
+//   .not('column', 'like', 'Negate filter')
+//   .or('some_column.eq.Some value, other_column.eq.Other value')
+
+export type CustomerFilters = {
+  state?: "ENABLED" | "DISABLED"
+};
+
+export const getCustomers = async (filters: CustomerFilters) => {
+  
+  const query = supabase.from("customer").select(
     `
       id,
       firstName:first_name,
       lastName:last_name,
+      state,
       phone,
       email,
       locale,
@@ -22,6 +52,10 @@ export const getCustomers = async (filters: any) => {
       count: "exact",
     }
   );
+  if (filters.state) {
+    query.eq("state", filters.state);
+  }
+  const { data, error } = await query;
 
   if (error) throw error;
 
@@ -173,6 +207,23 @@ export const addComment = async ({id, message}:AddCommentParams) => {
     type: "comment",
     payload: { message },
   });
+
+  if (error) throw error;
+  return data;
+};
+
+type SetCustomerStateParams = {
+  id: string;
+  state: "ENABLED" | "DISABLED";
+}
+export const setCustomerState = async ({id, state}: SetCustomerStateParams) => {
+   const { data, error } = await supabase
+    .from("customer")
+    .update({
+      state
+    })
+    .eq("id", id)
+    .select();
 
   if (error) throw error;
   return data;

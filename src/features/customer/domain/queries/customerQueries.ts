@@ -1,4 +1,5 @@
 import {
+  CustomerFilters,
   getCustomerById,
   getCustomerEvents,
   getCustomerLastOrder,
@@ -6,30 +7,30 @@ import {
 } from "@/apis/supabase/customer";
 import { queryOptions } from "@tanstack/react-query";
 
-type CustomerFilters = {
-  name: string;
-};
-
-export const customerQueries = {
-  all: ["customers"],
-  list: (filters?: CustomerFilters) =>
-    queryOptions({
-      queryKey: [...customerQueries.all, "list", filters],
-      queryFn: () => getCustomers(filters ?? {}),
-    }),
+export const customerDetailQueries = {
+  all: ["customer"],
   detail: (id: string) =>
     queryOptions({
-      queryKey: [...customerQueries.all, "detail", id],
+      queryKey: [...customerDetailQueries.all, id],
       queryFn: () => getCustomerById({ id }),
     }),
   events: (id: string) =>
     queryOptions({
-      queryKey: [...customerQueries.all, "detail", id, "events"],
+      queryKey: [...customerDetailQueries.all, id, "events"],
       queryFn: () => getCustomerEvents({ id }),
     }),
   lastOrder: (id: string) =>
     queryOptions({
-      queryKey: [...customerQueries.all, "detail", id, "last-order"],
+      queryKey: [...customerDetailQueries.all, id, "last-order"],
       queryFn: () => getCustomerLastOrder({ id }),
+    }),
+};
+
+export const customerListQueries = {
+  all: ["customer-list"],
+  list: (filters?: CustomerFilters) =>
+    queryOptions({
+      queryKey: [...customerListQueries.all, filters],
+      queryFn: () => getCustomers(filters ?? {}),
     }),
 };

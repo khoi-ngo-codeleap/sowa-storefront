@@ -23,7 +23,6 @@ function RouteComponent() {
         </div>
       </header>
       <div className="flex-1">
-        <CustomerTimeline />
         <div className="max-w-screen-md mx-auto">
           {/* hero text */}
           <div className="flex flex-col py-6 gap-y-6 items-center justify-center">

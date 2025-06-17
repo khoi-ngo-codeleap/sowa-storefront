@@ -11,7 +11,7 @@ export default function useAddComment() {
     },
     mutationFn: addComment,
     onSuccess: (_data, _variables) => {
-      return queryClient.invalidateQueries({queryKey: ['customers', 'detail', _variables.id, 'events']});
+      return queryClient.invalidateQueries({queryKey: ['customer', _variables.id, 'events']});
     }
   });
 };

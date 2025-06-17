@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { customerQueries } from "./customerQueries";
+import { customerListQueries } from "./customerQueries";
+import { CustomerFilters } from "@/apis/supabase/customer";
 
-export default function useCustomersQuery() {
-  return useQuery(customerQueries.list());
+export default function useCustomersQuery(filters?: CustomerFilters) {
+  return useQuery(customerListQueries.list(filters));
 }

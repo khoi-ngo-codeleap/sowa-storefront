@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { updateCustomer } from "@/apis/supabase/customer";
-import { customerQueries } from "../queries/customerQueries";
+import { customerDetailQueries } from "../queries/customerQueries";
 import queryClient from "@/configs/queryClient";
 
 export default function useUpdateCustomer() {
@@ -11,7 +11,7 @@ export default function useUpdateCustomer() {
     },
     mutationFn:updateCustomer,
     onSuccess: () => {
-      return queryClient.invalidateQueries({queryKey: customerQueries.all});
+      return queryClient.invalidateQueries({queryKey: customerDetailQueries.all});
     }
   });
 };
