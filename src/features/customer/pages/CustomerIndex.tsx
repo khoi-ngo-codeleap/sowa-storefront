@@ -1,6 +1,7 @@
 import CustomerList from "../components/customer-list/CustomerList";
 import DisabledCustomerList from "../components/customer-list/DisabledCustomerList";
 import EnabledCustomerList from "../components/customer-list/EnabledCustomerList";
+import EditCustomerContactSheet from "../components/edit-contact-sheet/EditCustomerContactSheet";
 
 const CustomerIndex = () => {
   return (
@@ -8,6 +9,7 @@ const CustomerIndex = () => {
       <CustomerList />
       <DisabledCustomerList />
       <EnabledCustomerList />
+      <EditCustomerContactSheet />
     </div>
   );
 };

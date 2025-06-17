@@ -11,6 +11,7 @@ import { DialogDescription } from "@radix-ui/react-dialog";
 
 const EditCustomerContactModal = () => {
   const { type, payload: draftCustomer } = useAtomValue(modalAtom);
+  const isOpen = type === "edit_contact";
   const closeModal = useSetAtom(closeModalAtom);
 
   const handleOpenChange = (open: boolean) => {
@@ -20,7 +21,7 @@ const EditCustomerContactModal = () => {
   };
 
   return (
-    <Dialog open={type === "edit_contact"} onOpenChange={handleOpenChange}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[480px]">
         <DialogHeader>
           <DialogTitle>Edit customer</DialogTitle>
@@ -28,9 +29,7 @@ const EditCustomerContactModal = () => {
             Edit customer name, email, phone number, and default address.
           </DialogDescription>
         </DialogHeader>
-        {type === "edit_contact" && (
-          <EditCustomerContactForm value={draftCustomer} />
-        )}
+        {isOpen && <EditCustomerContactForm value={draftCustomer} />}
       </DialogContent>
     </Dialog>
   );

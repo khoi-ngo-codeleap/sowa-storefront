@@ -11,6 +11,7 @@ import EditCustomerNoteForm from "../form/EditCustomerNoteForm";
 
 const EditNoteModal = () => {
   const { type, payload: draftCustomer } = useAtomValue(modalAtom);
+  const isOpen = type === "edit_note";
   const closeModal = useSetAtom(closeModalAtom);
 
   const handleOpenChange = (open: boolean) => {
@@ -20,13 +21,13 @@ const EditNoteModal = () => {
   };
 
   return (
-    <Dialog open={type === "edit_note"} onOpenChange={handleOpenChange}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[480px]">
         <DialogHeader>
           <DialogTitle>Edit note</DialogTitle>
           <DialogDescription>Edit the customer note below.</DialogDescription>
         </DialogHeader>
-        {type === "edit_note" && <EditCustomerNoteForm value={draftCustomer} />}
+        {isOpen && <EditCustomerNoteForm value={draftCustomer} />}
       </DialogContent>
     </Dialog>
   );
