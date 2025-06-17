@@ -1,8 +1,7 @@
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CustomerDetail } from "@/types/domain";
-import { customerNoteSchema, CustomerNoteValue } from "./schema";
+import { customerNoteSchema } from "./schema";
 import {
   Form,
   FormControl,
@@ -11,39 +10,43 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import useUpdateCustomer from "../../domain/command/useUpdateCustomer";
-import { useSetAtom } from "jotai";
-import { closeModalAtom } from "../../domain/state/modal";
 import { Button } from "@/components/ui/button";
 import { Loader } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
+import z from "zod";
 
 interface EditCustomerNoteFormProps {
-  value: CustomerDetail;
+  customer?: { id: string; note: string | null };
+  onCompleted?: () => void;
 }
 
 const EditCustomerNoteForm: React.FC<EditCustomerNoteFormProps> = ({
-  value,
+  customer,
+  onCompleted,
 }) => {
-  const closeModal = useSetAtom(closeModalAtom);
   const { mutate, isPending } = useUpdateCustomer();
 
-  const form = useForm<CustomerNoteValue>({
-    defaultValues: {
-      note: value.note ?? "",
-    },
+  const form = useForm<z.infer<typeof customerNoteSchema>>({
+    defaultValues: customer
+      ? {
+          note: customer.note,
+        }
+      : undefined,
     resolver: zodResolver(customerNoteSchema),
   });
 
-  const onSubmit: SubmitHandler<CustomerNoteValue> = (values) => {
-    mutate(
-      {
-        id: value.id,
-        updateSet: values,
-      },
-      {
-        onSuccess: () => closeModal(),
-      }
-    );
+  const onSubmit: SubmitHandler<z.infer<typeof customerNoteSchema>> = (
+    values
+  ) => {
+    if (customer) {
+      mutate(
+        {
+          id: customer.id,
+          updateSet: values,
+        },
+        { onSuccess: onCompleted }
+      );
+    }
   };
 
   return (
@@ -56,10 +59,11 @@ const EditCustomerNoteForm: React.FC<EditCustomerNoteFormProps> = ({
             <FormItem>
               <FormControl>
                 <Textarea
+                  {...field}
                   rows={4}
                   placeholder="Write your notes here..."
                   className="resize-none"
-                  {...field}
+                  value={field.value ?? ""}
                 />
               </FormControl>
               <FormMessage />
@@ -67,7 +71,7 @@ const EditCustomerNoteForm: React.FC<EditCustomerNoteFormProps> = ({
           )}
         />
         <div className="flex justify-end gap-2">
-          <Button variant="outline" onClick={closeModal} disabled={isPending}>
+          <Button variant="outline" onClick={onCompleted} disabled={isPending}>
             Cancel
           </Button>
           <Button disabled={isPending}>

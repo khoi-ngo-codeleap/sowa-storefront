@@ -11,7 +11,5 @@ export const customerContactSchema = z.object({
 export type CustomerContactValue = z.infer<typeof customerContactSchema>;
 
 export const customerNoteSchema = z.object({
-  note: z.string().min(1, { message: "Note is required" }),
+  note: z.string().nullable(),
 });
-
-export type CustomerNoteValue = z.infer<typeof customerNoteSchema>;

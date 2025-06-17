@@ -1,4 +1,3 @@
-import { useSetAtom, useAtomValue } from "jotai";
 import {
   Sheet,
   SheetContent,
@@ -6,22 +5,15 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { closeModalAtom, modalAtom } from "../../domain/state/modal";
-import EditCustomerContactForm from "../form/EditCustomerContactForm";
+import { useModal, useModalState } from "../../state/modal";
+import CustomerContactForm from "../form/CustomerContactForm";
 
 const EditCustomerContactSheet = () => {
-  const { type, payload: customer } = useAtomValue(modalAtom);
-  const isOpen = type === "edit_contact";
-  const closeModal = useSetAtom(closeModalAtom);
-
-  const handleOpenChange = (open: boolean) => {
-    if (!open) {
-      closeModal();
-    }
-  };
+  const { isOpen, close, onChange } = useModal("editContact");
+  const draftCustomer = useModalState("editContact");
 
   return (
-    <Sheet open={isOpen} onOpenChange={handleOpenChange}>
+    <Sheet open={isOpen} onOpenChange={onChange}>
       <SheetContent className="w-[480px] overflow-y-auto">
         <SheetHeader>
           <SheetTitle>Edit customer</SheetTitle>
@@ -29,7 +21,7 @@ const EditCustomerContactSheet = () => {
             Edit customer name, email, phone number, and default address.
           </SheetDescription>
         </SheetHeader>
-        {isOpen && <EditCustomerContactForm value={customer} />}
+        <CustomerContactForm customer={draftCustomer} onCompleted={close} />
       </SheetContent>
     </Sheet>
   );

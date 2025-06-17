@@ -9,17 +9,16 @@ import { Customer } from "@/types/domain";
 import { Ellipsis, Loader } from "lucide-react";
 import React from "react";
 import useUpdateCustomerState from "../../domain/command/useUpdateCustomerState";
-import { useSetAtom } from "jotai";
-import { openModalAtom } from "../../domain/state/modal";
+import { useModal } from "../../state/modal";
 
 const EditCustomerContactButton: React.FC<{ customer: Customer }> = ({
   customer,
 }) => {
-  const openModal = useSetAtom(openModalAtom);
+  const { open } = useModal("editContact");
   const handleEditContact = () => {
-    openModal({
-      type: "edit_contact",
-      payload: customer as any, // Using 'as any' since we're passing Customer instead of CustomerDetail
+    open({
+      type: "editContact",
+      payload: customer,
     });
   };
 

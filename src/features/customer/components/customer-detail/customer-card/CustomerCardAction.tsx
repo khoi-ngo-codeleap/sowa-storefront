@@ -6,13 +6,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Ellipsis } from "lucide-react";
-import { useSetAtom } from "jotai";
 import useCustomerDetailQuery from "@/features/customer/domain/queries/useCustomerDetailQuery";
-import { openModalAtom } from "@/features/customer/domain/state/modal";
+import { useModal } from "@/features/customer/state/modal";
 
 const CustomerCardAction = () => {
   const { data: customer } = useCustomerDetailQuery();
-  const editCustomer = useSetAtom(openModalAtom);
+  const { open } = useModal("editContact");
+
+  const handleEditCustomer = () => {
+    open({ type: "editContact", payload: customer });
+  };
 
   return (
     <DropdownMenu>
@@ -22,11 +25,7 @@ const CustomerCardAction = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48 rounded-lg">
-        <DropdownMenuItem
-          onClick={() =>
-            editCustomer({ type: "edit_contact", payload: customer })
-          }
-        >
+        <DropdownMenuItem onClick={handleEditCustomer}>
           <span>Edit contact information</span>
         </DropdownMenuItem>
         <DropdownMenuItem disabled>

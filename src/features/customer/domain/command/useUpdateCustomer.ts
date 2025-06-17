@@ -1,6 +1,5 @@
-import { useMutation } from "@tanstack/react-query";
+import { Query, useMutation } from "@tanstack/react-query";
 import { updateCustomer } from "@/apis/supabase/customer";
-import { customerDetailQueries, customerListQueries } from "../queries/customerQueries";
 import queryClient from "@/configs/queryClient";
 
 export default function useUpdateCustomer() {
@@ -10,11 +9,10 @@ export default function useUpdateCustomer() {
       errorMsg: "Opp!, something went wrong",
     },
     mutationFn: updateCustomer,
-    onSuccess: () => {
-      return Promise.allSettled([
-        queryClient.invalidateQueries({ queryKey: customerDetailQueries.all }),
-        queryClient.invalidateQueries({ queryKey: customerListQueries.all }),
-      ]);
+    onSuccess: (_data, variable, _context) => {
+      return queryClient.invalidateQueries({
+        predicate: ({ queryKey }: Query) => queryKey.includes(variable.id) || queryKey.includes('customer-list')
+      });
     },
   });
 }

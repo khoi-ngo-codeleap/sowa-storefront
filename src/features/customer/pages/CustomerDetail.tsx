@@ -11,8 +11,7 @@ import TagCard from "../components/customer-detail/tag-card/TagCard";
 import StatsBar from "../components/customer-detail/stats-bar/StatsBar";
 import CustomerCard from "../components/customer-detail/customer-card/CustomerCard";
 import ActionBar from "../components/customer-detail/action-bar/ActionBar";
-import EditCustomerContactModal from "../components/edit-contact-modal/EditCustomerContactModal";
-import EditNoteModal from "../components/edit-note-modal/EditNoteModal";
+import CustomerModals from "../components/modals/CustomerModals";
 
 const CustomerDetail = () => {
   return (
@@ -33,8 +32,7 @@ const CustomerDetail = () => {
           <NoteCard />
         </div>
       </PageContent>
-      <EditCustomerContactModal />
-      <EditNoteModal />
+      <CustomerModals />
     </PageWrapper>
   );
 };

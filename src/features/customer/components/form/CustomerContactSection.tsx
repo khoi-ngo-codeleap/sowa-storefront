@@ -1,4 +1,3 @@
-import React from "react";
 import { useFormContext } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import {
@@ -19,12 +18,17 @@ import {
 } from "@/components/ui/form";
 import { SelectOption } from "@/types/select";
 
-type CustomerContactSectionProps = {
-  localeOptions: SelectOption[];
-};
-const CustomerContactSection: React.FC<CustomerContactSectionProps> = ({
-  localeOptions,
-}) => {
+const localeOptions: SelectOption[] = [
+  { label: "United States", value: "en-US" },
+  { label: "China", value: "zh-CN" },
+  { label: "Saudi Arabia", value: "ar-SA" },
+  { label: "South Korea", value: "ko-KR" },
+  { label: "Mexico", value: "es-MX" },
+  { label: "Vietnam", value: "vi-VN" },
+  { label: "United Kingdom", value: "en-GB" },
+];
+
+const CustomerContactSection = () => {
   const methods = useFormContext<CustomerContactValue>();
   return (
     <div className="grid gap-4 py-2">
