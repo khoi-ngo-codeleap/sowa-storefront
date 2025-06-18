@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Customer } from "@/types/domain";
+import { Customer } from "@/types/domain/customer";
 import { Link } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";

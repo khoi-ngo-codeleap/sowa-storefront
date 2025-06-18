@@ -4,7 +4,7 @@ import {
   getCustomerEvents,
   getCustomerLastOrder,
   getCustomers,
-} from "@/apis/supabase/customer";
+} from "@/api/customer";
 import { queryOptions } from "@tanstack/react-query";
 
 export const customerDetailQueries = {

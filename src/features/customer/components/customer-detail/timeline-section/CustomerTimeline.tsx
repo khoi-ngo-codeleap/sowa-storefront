@@ -1,4 +1,3 @@
-import useCustomerEventsQuery from "@/features/customer/domain/queries/useCustomerEventsQuery";
 import TimeLineSkeleton from "./TimeLineSkeleton";
 import { Timeline } from "@/components/ui/timeline";
 import {
@@ -10,6 +9,7 @@ import {
   CustomerUpdateNoteTimelineEvent,
   CustomerUpdateTimelineEvent,
 } from "./CustomerTimelineEvents";
+import useCustomerEventsQuery from "@/features/customer/domain/queries/useCustomerEventsQuery";
 
 const CustomerTimeline = () => {
   const { status, data: events = [] } = useCustomerEventsQuery();

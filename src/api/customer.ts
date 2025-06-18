@@ -1,15 +1,19 @@
-import { CustomerEvent } from "@/types/event";
-import supabase from "../supabase";
+import { CustomerEvent } from "@/types/domain/event.customer";
+import supabase from "@/api/client/supabase";
 import { Tables } from "@/types/database.types";
+import { Customer, CustomerDetail } from "@/types/domain/customer";
 
 export type CustomerFilters = {
-  state?: "ENABLED" | "DISABLED"
+  state?: "ENABLED" | "DISABLED";
 };
 
-export const getCustomers = async (filters: CustomerFilters) => {
-  
-  const query = supabase.from("customer").select(
-    `
+export const getCustomers = async (
+  filters: CustomerFilters
+): Promise<Customer[]> => {
+  const query = supabase
+    .from("customer")
+    .select(
+      `
       id,
       firstName:first_name,
       lastName:last_name,
@@ -24,13 +28,16 @@ export const getCustomers = async (filters: CustomerFilters) => {
         country
       ),
       orderAggregate:customer_order(id.count(), price.sum())`,
-    {
-      count: "exact",
-    }
-  ).order("email", { ascending: false });
+      {
+        count: "exact",
+      }
+    )
+    .order("email", { ascending: false });
+
   if (filters.state) {
     query.eq("state", filters.state);
   }
+
   const { data, error } = await query;
 
   if (error) throw error;
@@ -41,7 +48,7 @@ export const getCustomers = async (filters: CustomerFilters) => {
 type GetCustomerByIdParams = {
   id: string;
 };
-export const getCustomerById = async ({ id }: GetCustomerByIdParams) => {
+export const getCustomerById = async ({ id }: GetCustomerByIdParams): Promise<CustomerDetail> => {
   const { data, error } = await supabase
     .from("customer")
     .select(
@@ -57,8 +64,14 @@ export const getCustomerById = async ({ id }: GetCustomerByIdParams) => {
     taxExempt:tax_exempt,
     createdAt:created_at,
     note,
-    tags:customer_tag(*),
-    marketingConsent:customer_marketing_consent(*),
+    tags:customer_tag(
+      tagId:tag_id, 
+      enabled
+    ),
+    marketingConsent:customer_marketing_consent(
+      type,
+      status
+    ),
     address:customer_address(
       id,
       formattedArea:formatted_area,
@@ -68,7 +81,9 @@ export const getCustomerById = async ({ id }: GetCustomerByIdParams) => {
     )
     .eq("id", id)
     .single();
+
   if (error) throw error;
+
   return data;
 };
 
@@ -106,7 +121,9 @@ export const getCustomerLastOrder = async ({
 type GetCustomerEvents = {
   id: string;
 };
-export const getCustomerEvents = async ({ id }: GetCustomerEvents) => {
+export const getCustomerEvents = async ({
+  id,
+}: GetCustomerEvents): Promise<CustomerEvent[]> => {
   const { data, error } = await supabase
     .from("customer_event")
     .select(
@@ -176,8 +193,8 @@ export const updateCustomer = async ({
 type AddCommentParams = {
   id: string;
   message: string;
-}
-export const addComment = async ({id, message}:AddCommentParams) => {
+};
+export const addComment = async ({ id, message }: AddCommentParams) => {
   const { data, error } = await supabase.from("customer_event").insert({
     customer_id: id,
     type: "comment",
@@ -191,12 +208,15 @@ export const addComment = async ({id, message}:AddCommentParams) => {
 type SetCustomerStateParams = {
   id: string;
   state: "ENABLED" | "DISABLED";
-}
-export const setCustomerState = async ({id, state}: SetCustomerStateParams) => {
-   const { data, error } = await supabase
+};
+export const setCustomerState = async ({
+  id,
+  state,
+}: SetCustomerStateParams) => {
+  const { data, error } = await supabase
     .from("customer")
     .update({
-      state
+      state,
     })
     .eq("id", id)
     .select();

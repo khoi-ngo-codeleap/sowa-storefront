@@ -1,5 +1,5 @@
 import { Query, useMutation } from "@tanstack/react-query";
-import { updateCustomer } from "@/apis/supabase/customer";
+import { updateCustomer } from "@/api/customer";
 import queryClient from "@/configs/queryClient";
 
 export default function useUpdateCustomer() {

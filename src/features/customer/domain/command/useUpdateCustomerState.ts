@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { setCustomerState } from "@/apis/supabase/customer";
+import { setCustomerState } from "@/api/customer";
 import queryClient from "@/configs/queryClient";
 import { customerListQueries } from "../queries/customerQueries";
 

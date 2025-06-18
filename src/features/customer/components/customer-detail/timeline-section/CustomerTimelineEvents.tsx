@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import dayjs, { SupportedFormats } from "@/lib/dayjs";
-import { CustomerEvent } from "@/types/event";
+import { CustomerEvent } from "@/types/domain/event.customer";
 import { Card } from "@/components/ui/card";
 import {
   Tooltip,
@@ -142,16 +142,6 @@ export function CustomerUpdateTimelineEvent(
         {event.payload.original} to {event.payload.new}.
         <FormattedTime time={event.createdAt} />
       </TimelineItemHeader>
-      {/* <TimelineItemContent>
-        <div className="py-2">
-          <div className="font-semibold">New note:</div>
-          <div>{event.payload.new}</div>
-        </div>
-        <div>
-          <div className="font-semibold">Old note:</div>
-          <div>{event.payload.original}</div>
-        </div>
-      </TimelineItemContent> */}
     </TimelineItem>
   );
 }
