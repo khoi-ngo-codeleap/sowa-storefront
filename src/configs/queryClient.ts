@@ -1,6 +1,5 @@
 import { toast } from "@/hooks/use-toast";
 import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
-import * as Sentry from "@sentry/react";
 import { isAxiosError } from "axios";
 
 declare module "@tanstack/react-query" {
@@ -16,7 +15,6 @@ const queryClient = new QueryClient({
   /** config query cache */
   queryCache: new QueryCache({
     onError: (error) => {
-      Sentry.captureException(error);
       if (isAxiosError(error) && error.response) {
         // only show toast for server error
         if (error.response.status >= 500) {
@@ -34,7 +32,6 @@ const queryClient = new QueryClient({
       }
     },
     onError: (error, _variables, _context, mutation) => {
-      Sentry.captureException(error);
       const { errorMsg } = mutation.meta || {};
 
       if (isAxiosError(error) && errorMsg) {

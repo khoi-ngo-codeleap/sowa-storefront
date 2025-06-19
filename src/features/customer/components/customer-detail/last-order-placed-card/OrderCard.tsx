@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import useCustomerLastOrderQuery from "@/features/customer/domain/queries/useCustomerLastOrderQuery";
+import useCustomerLastOrderQuery from "@/features/customer/hooks/useCustomerLastOrderQuery";
 import { SupportedFormats } from "@/lib/dayjs";
 import dayjs from "dayjs";
 import { CheckCircle2Icon } from "lucide-react";

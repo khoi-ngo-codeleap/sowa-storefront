@@ -9,7 +9,7 @@ import {
   CustomerUpdateNoteTimelineEvent,
   CustomerUpdateTimelineEvent,
 } from "./CustomerTimelineEvents";
-import useCustomerEventsQuery from "@/features/customer/domain/queries/useCustomerEventsQuery";
+import useCustomerEventsQuery from "@/features/customer/hooks/useCustomerEventsQuery";
 
 const CustomerTimeline = () => {
   const { status, data: events = [] } = useCustomerEventsQuery();

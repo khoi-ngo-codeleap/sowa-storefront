@@ -1,5 +1,5 @@
 import supabase from "@/api/client/supabase";
-import { CustomerDetail } from "@/types/domain/customer";
+import { CustomerDetail } from "../types/customer";
 
 interface GetCustomerByIdVariable {
   id: string;

@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import queryClient from "@/configs/queryClient";
-import { customerListQueries } from "../queries/customerQueries";
-import { updateCustomer } from "../api/updateCustomer";
+import { customerListQueries } from "./queryKeyFactories";
+import { updateCustomer } from "../domain/command/updateCustomer";
 
 interface UpdateCustomerStateVariables {
   id: string;

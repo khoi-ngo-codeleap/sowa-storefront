@@ -1,8 +1,8 @@
 import { queryOptions } from "@tanstack/react-query";
-import { getCustomerLastOrder } from "../api/getCustomerLastOrder";
-import { getCustomerById } from "../api/getCustomerById";
-import { getCustomerEvents } from "../api/getCustomerEvents";
-import { getCustomers, GetCustomersVariable } from "../api/getCustomers";
+import { getCustomerLastOrder } from "../domain/queries/getCustomerLastOrder";
+import { getCustomerById } from "../domain/queries/getCustomerById";
+import { getCustomerEvents } from "../domain/queries/getCustomerEvents";
+import { getCustomers, GetCustomersVariable } from "../domain/queries/getCustomers";
 
 export const customerDetailQueries = {
   all: ["customer"],
@@ -33,9 +33,9 @@ export const customerDetailQueries = {
  */
 export const customerListQueries = {
   all: ["customer-list"],
-  list: (variables: GetCustomersVariable) =>
+  list: (variables?: GetCustomersVariable) =>
     queryOptions({
       queryKey: [...customerListQueries.all, variables],
-      queryFn: () => getCustomers(variables ?? {}),
+      queryFn: () => getCustomers(variables),
     }),
 };

@@ -7,7 +7,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import useCustomerDetailQuery from "@/features/customer/domain/queries/useCustomerDetailQuery";
+import useCustomerDetailQuery from "@/features/customer/hooks/useCustomerDetailQuery";
 import { Pencil, XIcon } from "lucide-react";
 import { useMemo } from "react";
 

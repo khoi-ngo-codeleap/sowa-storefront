@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import queryClient from "@/configs/queryClient";
-import { addComment } from "../api/addComment";
+import { addComment } from "../domain/command/addComment";
 
 export default function useAddComment() {
   return useMutation({

@@ -18,7 +18,7 @@ export interface Customer {
   }[];
 }
 
-export type CustomerDetail = {
+export interface CustomerDetail {
   id: string;
   email: string;
   firstName: string;

@@ -6,7 +6,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import useAddComment from "@/features/customer/domain/command/useAddComment";
+import useAddComment from "@/features/customer/hooks/useAddComment";
 import { toast } from "@/hooks/use-toast";
 import { useCustomerId } from "@/providers/CustomerIdContext";
 import { Smile, AtSign, Hash, Link, Loader } from "lucide-react";

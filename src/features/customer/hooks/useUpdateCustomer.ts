@@ -1,6 +1,6 @@
 import { Query, useMutation } from "@tanstack/react-query";
 import queryClient from "@/configs/queryClient";
-import { updateCustomer } from "../api/updateCustomer";
+import { updateCustomer } from "../domain/command/updateCustomer";
 
 export default function useUpdateCustomer() {
   return useMutation({

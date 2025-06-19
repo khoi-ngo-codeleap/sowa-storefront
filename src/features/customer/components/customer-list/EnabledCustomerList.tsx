@@ -1,10 +1,12 @@
 import { DataTable } from "@/components/ui/data-table";
 import customerTableColumns from "./CustomerTableColumns";
-import useCustomersQuery from "../../domain/queries/useCustomersQuery";
+import useCustomersQuery from "../../hooks/useCustomersQuery";
 
 const EnabledCustomerList = () => {
   const { status, data: customers = [] } = useCustomersQuery({
-    state: "ENABLED",
+    filters: {
+      state: "ENABLED",
+    },
   });
 
   return (

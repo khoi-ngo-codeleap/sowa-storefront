@@ -5,11 +5,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Customer } from "@/types/domain/customer";
 import { Ellipsis, Loader } from "lucide-react";
 import React from "react";
-import useUpdateCustomerState from "../../domain/command/useUpdateCustomerState";
+import useUpdateCustomerState from "../../hooks/useUpdateCustomerState";
 import { useModal } from "../../state/modal";
+import { Customer } from "../../domain/types/customer";
 
 const EditCustomerContactButton: React.FC<{ customer: Customer }> = ({
   customer,

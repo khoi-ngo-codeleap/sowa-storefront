@@ -1,6 +1,6 @@
 import dayjs from "@/lib/dayjs";
 import { Card, CardContent } from "@/components/ui/card";
-import useCustomerDetailQuery from "@/features/customer/domain/queries/useCustomerDetailQuery";
+import useCustomerDetailQuery from "@/features/customer/hooks/useCustomerDetailQuery";
 
 const StatsBar = () => {
   const { data: customer } = useCustomerDetailQuery();

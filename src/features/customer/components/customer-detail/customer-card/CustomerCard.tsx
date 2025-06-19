@@ -1,6 +1,6 @@
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { CheckCircle, Globe, Mail, MapPin, Phone, XCircle } from "lucide-react";
-import useCustomerDetailQuery from "@/features/customer/domain/queries/useCustomerDetailQuery";
+import useCustomerDetailQuery from "@/features/customer/hooks/useCustomerDetailQuery";
 import CustomerCardAction from "./CustomerCardAction";
 
 const CustomerCard = () => {

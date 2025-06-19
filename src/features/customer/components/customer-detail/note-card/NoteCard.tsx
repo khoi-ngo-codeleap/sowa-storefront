@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import useCustomerDetailQuery from "@/features/customer/domain/queries/useCustomerDetailQuery";
+import useCustomerDetailQuery from "@/features/customer/hooks/useCustomerDetailQuery";
 import { useModal } from "@/features/customer/state/modal";
 import { Pencil } from "lucide-react";
 

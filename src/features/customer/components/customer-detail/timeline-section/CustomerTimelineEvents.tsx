@@ -8,13 +8,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import dayjs, { SupportedFormats } from "@/lib/dayjs";
-import { CustomerEvent } from "@/types/domain/event.customer";
 import { Card } from "@/components/ui/card";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { CustomerEvent } from "@/features/customer/domain/types/event";
 
 function FormattedTime({ time }: { time: string }) {
   return (

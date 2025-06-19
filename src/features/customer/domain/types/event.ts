@@ -1,4 +1,4 @@
-import { UnionizeEvents } from "./event";
+import { UnionizeEvents } from "@/types/domain/event";
 
 export type CustomerEventPayloadMap = {
   create: never;
@@ -13,7 +13,6 @@ export type CustomerEventPayloadMap = {
   create_note: { original: string };
   update_note: { original: string; new: string };
   credited: { credit: string };
-}
+};
 
 export type CustomerEvent = UnionizeEvents<CustomerEventPayloadMap>;
-

@@ -1,5 +1,5 @@
 import supabase from "@/api/client/supabase";
-import { CustomerEvent } from "@/types/domain/event.customer";
+import { CustomerEvent } from "../types/event";
 
 interface GetCustomerEventsVariable {
   id: string;

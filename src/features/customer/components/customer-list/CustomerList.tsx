@@ -1,5 +1,5 @@
 import { DataTable } from "@/components/ui/data-table";
-import useCustomersQuery from "../../domain/queries/useCustomersQuery";
+import useCustomersQuery from "../../hooks/useCustomersQuery";
 import customerTableColumns from "./CustomerTableColumns";
 
 const CustomerList = () => {

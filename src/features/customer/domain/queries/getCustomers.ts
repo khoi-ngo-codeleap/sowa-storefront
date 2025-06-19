@@ -1,5 +1,5 @@
 import supabase from "@/api/client/supabase";
-import { Customer } from "@/types/domain/customer";
+import { Customer } from "../types/customer";
 
 interface CustomerFilters {
   state?: "ENABLED" | "DISABLED";

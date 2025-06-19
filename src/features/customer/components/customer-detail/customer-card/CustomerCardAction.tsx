@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Ellipsis } from "lucide-react";
-import useCustomerDetailQuery from "@/features/customer/domain/queries/useCustomerDetailQuery";
+import useCustomerDetailQuery from "@/features/customer/hooks/useCustomerDetailQuery";
 import { useModal } from "@/features/customer/state/modal";
 
 const CustomerCardAction = () => {

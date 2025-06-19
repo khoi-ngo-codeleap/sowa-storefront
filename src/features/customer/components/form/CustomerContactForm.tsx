@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import CustomerContactSection from "./CustomerContactSection";
 import { Button } from "@/components/ui/button";
-import useUpdateCustomer from "../../domain/command/useUpdateCustomer";
+import useUpdateCustomer from "../../hooks/useUpdateCustomer";
 import { Loader } from "lucide-react";
 
 interface CustomerContactFormProps {

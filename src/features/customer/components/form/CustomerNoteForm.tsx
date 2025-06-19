@@ -9,7 +9,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import useUpdateCustomer from "../../domain/command/useUpdateCustomer";
+import useUpdateCustomer from "../../hooks/useUpdateCustomer";
 import { Button } from "@/components/ui/button";
 import { Loader } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
