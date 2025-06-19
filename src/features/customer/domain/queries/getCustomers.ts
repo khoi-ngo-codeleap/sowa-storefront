@@ -35,8 +35,9 @@ export const getCustomers = async ({
       }
     )
     .order("email", { ascending: false });
-
-  filters?.state && query.eq("state", filters.state);
+  if (filters?.state) {
+    query.eq("state", filters.state);
+  }
 
   const { data, error } = await query;
 

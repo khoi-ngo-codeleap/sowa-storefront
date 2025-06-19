@@ -9,7 +9,7 @@ export default function useUpdateCustomer() {
       errorMsg: "Opp!, something went wrong",
     },
     mutationFn: updateCustomer,
-    onSuccess: (_data, variable, _context) => {
+    onSuccess: (_data, variable) => {
       return queryClient.invalidateQueries({
         predicate: ({ queryKey }: Query) =>
           queryKey.includes(variable.id) || queryKey.includes("customer-list"),

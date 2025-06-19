@@ -41,6 +41,7 @@ const CustomerContactForm: React.FC<CustomerContactFormProps> = ({
 
   const onSubmit: SubmitHandler<CustomerContactValue> = (values) => {
     if (customer) {
+      console.log(values);
       mutate(
         {
           id: customer.id,
