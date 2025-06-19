@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import queryClient from "@/configs/queryClient";
 import { updateCustomer } from "../domain/command/updateCustomer";
-import customerListQueryServices from "../services/customerListQuery";
+import customerQueries from "../domain/queries/customerQueries";
 
 export default function useUpdateCustomer() {
   return useMutation({
@@ -12,7 +12,7 @@ export default function useUpdateCustomer() {
     mutationFn: updateCustomer,
     onSuccess: (_data, _variables) => {
       return queryClient.invalidateQueries({
-        queryKey: customerListQueryServices.all,
+        queryKey: customerQueries.all,
       });
     },
   });

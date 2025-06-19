@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import customerListQueryServices from "../services/customerListQuery";
 import { GetCustomersVariable } from "../domain/queries/getCustomers";
+import customerQueries from "../domain/queries/customerQueries";
 
 export default function useCustomersQuery(variables?: GetCustomersVariable) {
-  return useQuery(customerListQueryServices.list(variables));
+  return useQuery(customerQueries.list(variables));
 }

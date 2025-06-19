@@ -109,20 +109,36 @@ const DropdownMenuItem2: React.FC<
 
 const PlayGroundIndex = () => {
   return (
-    <div className="w-[300px] flex flex-col gap-4">
-      <CloseableMenuItem text="Item 1" />
-      <CollapsibleMenuItem text="Item 2">
-        This is some content
-      </CollapsibleMenuItem>
-      <DropdownMenuItem2
-        text="Item 3"
-        items={[
-          { key: "1", text: "Edit contact information" },
-          { key: "2", text: "Manage addresses" },
-          { key: "3", text: "Edit tax details" },
-          { key: "4", text: "Add to company" },
-        ]}
-      />
+    <div>
+      <div className="w-[300px] flex flex-col gap-2">
+        <CloseableMenuItem text="Item 1" />
+
+        <CollapsibleMenuItem text="Item 2">
+          <CloseableMenuItem text="Item 1" />
+          <CloseableMenuItem text="Item 1" />
+        </CollapsibleMenuItem>
+
+        <DropdownMenuItem2
+          text="Item 3"
+          items={[
+            { key: "1", text: "Edit contact information" },
+            { key: "2", text: "Manage addresses" },
+            { key: "3", text: "Edit tax details" },
+            { key: "4", text: "Add to company" },
+          ]}
+        />
+
+        <DropdownMenuItem2
+          text="Item 4"
+          items={[
+            { key: "1", text: "Edit contact information" },
+            { key: "2", text: "Manage addresses" },
+            { key: "3", text: "Edit tax details" },
+            { key: "4", text: "Add to company" },
+          ]}
+          icon={<Ellipsis />}
+        />
+      </div>
     </div>
   );
 };

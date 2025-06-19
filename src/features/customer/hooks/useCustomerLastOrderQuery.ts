@@ -1,8 +1,8 @@
 import { useCustomerId } from "@/providers/CustomerIdContext";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import customerDetailQueryServices from "../services/customerDetailQuery";
+import customerQueries from "../domain/queries/customerQueries";
 
 export default function useCustomerOrdersQuery() {
   const customerId = useCustomerId();
-  return useSuspenseQuery(customerDetailQueryServices.lastOrder(customerId));
+  return useSuspenseQuery(customerQueries.lastOrder(customerId));
 }

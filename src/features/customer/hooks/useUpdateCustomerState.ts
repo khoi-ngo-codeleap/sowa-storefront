@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import queryClient from "@/configs/queryClient";
-import customerListQueryServices from "../services/customerListQuery";
 import { updateCustomer } from "../domain/command/updateCustomer";
+import customerQueries from "../domain/queries/customerQueries";
 
 interface UpdateCustomerStateVariables {
   id: string;
@@ -21,7 +21,7 @@ export default function useUpdateCustomerState() {
       }),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: customerListQueryServices.all,
+        queryKey: customerQueries.all,
       });
     },
   });

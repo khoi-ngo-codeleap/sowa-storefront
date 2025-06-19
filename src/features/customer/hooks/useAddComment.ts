@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import queryClient from "@/configs/queryClient";
 import { addComment } from "../domain/command/addComment";
+import customerQueries from "../domain/queries/customerQueries";
 
 export default function useAddComment() {
   return useMutation({
@@ -9,9 +10,9 @@ export default function useAddComment() {
       errorMsg: "Opp!, something went wrong",
     },
     mutationFn: addComment,
-    onSuccess: (_data, _variables) => {
+    onSuccess: (_data, variables) => {
       return queryClient.invalidateQueries({
-        queryKey: ["customer", _variables.id, "events"],
+        queryKey: customerQueries.events(variables.id).queryKey,
       });
     },
   });
