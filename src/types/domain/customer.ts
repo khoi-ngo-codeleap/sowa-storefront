@@ -1,5 +1,3 @@
-import { getCustomerById, getCustomers } from "@/api/customer";
-
 export interface Customer {
   id: string;
   firstName: string;

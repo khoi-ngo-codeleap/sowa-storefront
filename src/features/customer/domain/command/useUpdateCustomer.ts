@@ -1,6 +1,6 @@
 import { Query, useMutation } from "@tanstack/react-query";
-import { updateCustomer } from "@/api/customer";
 import queryClient from "@/configs/queryClient";
+import { updateCustomer } from "../api/updateCustomer";
 
 export default function useUpdateCustomer() {
   return useMutation({
@@ -11,7 +11,8 @@ export default function useUpdateCustomer() {
     mutationFn: updateCustomer,
     onSuccess: (_data, variable, _context) => {
       return queryClient.invalidateQueries({
-        predicate: ({ queryKey }: Query) => queryKey.includes(variable.id) || queryKey.includes('customer-list')
+        predicate: ({ queryKey }: Query) =>
+          queryKey.includes(variable.id) || queryKey.includes("customer-list"),
       });
     },
   });

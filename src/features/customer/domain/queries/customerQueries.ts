@@ -1,11 +1,8 @@
-import {
-  CustomerFilters,
-  getCustomerById,
-  getCustomerEvents,
-  getCustomerLastOrder,
-  getCustomers,
-} from "@/api/customer";
 import { queryOptions } from "@tanstack/react-query";
+import { getCustomerLastOrder } from "../api/getCustomerLastOrder";
+import { getCustomerById } from "../api/getCustomerById";
+import { getCustomerEvents } from "../api/getCustomerEvents";
+import { getCustomers, GetCustomersVariable } from "../api/getCustomers";
 
 export const customerDetailQueries = {
   all: ["customer"],
@@ -36,9 +33,9 @@ export const customerDetailQueries = {
  */
 export const customerListQueries = {
   all: ["customer-list"],
-  list: (filters?: CustomerFilters) =>
+  list: (variables: GetCustomersVariable) =>
     queryOptions({
-      queryKey: [...customerListQueries.all, filters],
-      queryFn: () => getCustomers(filters ?? {}),
+      queryKey: [...customerListQueries.all, variables],
+      queryFn: () => getCustomers(variables ?? {}),
     }),
 };

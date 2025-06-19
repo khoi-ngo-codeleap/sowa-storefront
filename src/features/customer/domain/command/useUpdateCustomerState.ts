@@ -1,7 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
-import { setCustomerState } from "@/api/customer";
 import queryClient from "@/configs/queryClient";
 import { customerListQueries } from "../queries/customerQueries";
+import { updateCustomer } from "../api/updateCustomer";
+
+interface UpdateCustomerStateVariables {
+  id: string;
+  state: "ENABLED" | "DISABLED";
+}
 
 export default function useUpdateCustomerState() {
   return useMutation({
@@ -9,7 +14,11 @@ export default function useUpdateCustomerState() {
       successMsg: "Comment has been added successfully",
       errorMsg: "Opp!, something went wrong",
     },
-    mutationFn: setCustomerState,
+    mutationFn: (variables: UpdateCustomerStateVariables) =>
+      updateCustomer({
+        id: variables.id,
+        updateSet: { state: variables.state },
+      }),
     onSuccess: (_data, _variables) => {
       return queryClient.invalidateQueries({
         queryKey: customerListQueries.all,

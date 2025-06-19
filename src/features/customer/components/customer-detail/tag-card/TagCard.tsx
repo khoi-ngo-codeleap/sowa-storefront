@@ -52,8 +52,8 @@ const TagCard = () => {
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
               <TagItem
-                key={tag.tag_id}
-                name={tag.tag_id}
+                key={tag.tagId}
+                name={tag.tagId}
                 onClick={() => alert("ê")}
               />
             ))}

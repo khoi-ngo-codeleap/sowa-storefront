@@ -16,7 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { SelectOption } from "@/types/select";
+import { SelectOption } from "@/types/common";
 
 const localeOptions: SelectOption[] = [
   { label: "United States", value: "en-US" },
