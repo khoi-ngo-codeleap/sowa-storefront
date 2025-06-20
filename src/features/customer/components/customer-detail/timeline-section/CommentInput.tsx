@@ -7,7 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import useAddComment from "@/features/customer/hooks/useAddComment";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useCustomerId } from "@/providers/CustomerIdContext";
 import { Smile, AtSign, Hash, Link, Loader } from "lucide-react";
 import { useState } from "react";
@@ -19,8 +19,7 @@ const CommentInput = () => {
 
   const handleSubmit = () => {
     if (!comment.trim()) {
-      toast({
-        title: "Empty comment",
+      toast("Empty comment", {
         description: "It seems like you haven't entered a comment",
       });
       return;

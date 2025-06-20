@@ -1,8 +1,10 @@
 import path from "path";
 import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import tanstackRouter from "@tanstack/router-plugin/vite";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
+
 // https://vite.dev/config/
 export default defineConfig({
   server: {
@@ -10,6 +12,7 @@ export default defineConfig({
     host: "0.0.0.0",
   },
   plugins: [
+    tailwindcss(),
     tanstackRouter({ autoCodeSplitting: true }),
     react({
       babel: {

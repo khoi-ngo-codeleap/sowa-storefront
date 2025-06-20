@@ -1,4 +1,4 @@
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { PostgrestError } from "@supabase/supabase-js";
 import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
 import { AxiosError, isAxiosError } from "axios";
@@ -65,7 +65,7 @@ const queryClient = new QueryClient({
     onSuccess: (_data, _variables, _context, mutation) => {
       const { successMsg } = mutation.meta ?? {};
       if (successMsg) {
-        toast({ title: successMsg, variant: "success" });
+        toast(successMsg);
       }
     },
     // ✅ show configured error message
