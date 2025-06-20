@@ -51,14 +51,14 @@ const CommentInput = () => {
           {/* Input box */}
           <div className="flex-1">
             <Input
-              className="border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
-              placeholder="Leave a comment..."
+              // className="border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              // placeholder="Leave a comment..."
               value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
           </div>
         </div>
-        <div className="flex items-center justify-between text-muted-foreground text-sm px-4 py-3 bg-secondary">
+        <div className="flex items-center justify-between text-muted-foreground px-4 py-3 bg-secondary">
           <div className="flex-1 flex items-center gap-3">
             {[Smile, AtSign, Hash, Link].map((Icon) => (
               <Tooltip key={Icon.displayName}>
@@ -73,7 +73,6 @@ const CommentInput = () => {
           </div>
           <div>
             <Button
-              size="sm"
               disabled={!comment.trim() || isPending}
               onClick={handleSubmit}
             >

@@ -7,7 +7,7 @@ const StatsBar = () => {
   return (
     <Card className="w-full">
       <CardContent className="p-6 space-y-4">
-        <div className="grid grid-cols-4 gap-4 text-sm">
+        <div className="grid grid-cols-4 gap-4">
           <div>
             <p className="font-medium">Amount spent</p>
             <p>{customer.orderAggregate[0].sum ?? 0}</p>

@@ -60,13 +60,13 @@ function TableContent<TData, TValue>({
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+  data?: TData[];
   isLoading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  data,
+  data = [],
   isLoading = false,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({

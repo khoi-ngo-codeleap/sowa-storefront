@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as Protected401RouteImport } from './routes/_protected/401'
 import { Route as AuthSigninRouteImport } from './routes/_auth/signin'
 import { Route as ProtectedPlaygroundIndexRouteImport } from './routes/_protected/playground/index'
 import { Route as ProtectedCustomersIndexRouteImport } from './routes/_protected/customers/index'
@@ -30,6 +31,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const Protected401Route = Protected401RouteImport.update({
+  id: '/401',
+  path: '/401',
+  getParentRoute: () => ProtectedRoute,
 } as any)
 const AuthSigninRoute = AuthSigninRouteImport.update({
   id: '/signin',
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof ProtectedRouteWithChildren
   '/signin': typeof AuthSigninRoute
+  '/401': typeof Protected401Route
   '/customers/$customerId': typeof ProtectedCustomersCustomerIdRoute
   '/customers': typeof ProtectedCustomersIndexRoute
   '/playground': typeof ProtectedPlaygroundIndexRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof ProtectedRouteWithChildren
   '/signin': typeof AuthSigninRoute
+  '/401': typeof Protected401Route
   '/customers/$customerId': typeof ProtectedCustomersCustomerIdRoute
   '/customers': typeof ProtectedCustomersIndexRoute
   '/playground': typeof ProtectedPlaygroundIndexRoute
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/_protected': typeof ProtectedRouteWithChildren
   '/_auth/signin': typeof AuthSigninRoute
+  '/_protected/401': typeof Protected401Route
   '/_protected/customers/$customerId': typeof ProtectedCustomersCustomerIdRoute
   '/_protected/customers/': typeof ProtectedCustomersIndexRoute
   '/_protected/playground/': typeof ProtectedPlaygroundIndexRoute
@@ -95,6 +104,7 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/signin'
+    | '/401'
     | '/customers/$customerId'
     | '/customers'
     | '/playground'
@@ -104,6 +114,7 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/signin'
+    | '/401'
     | '/customers/$customerId'
     | '/customers'
     | '/playground'
@@ -114,6 +125,7 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/_protected'
     | '/_auth/signin'
+    | '/_protected/401'
     | '/_protected/customers/$customerId'
     | '/_protected/customers/'
     | '/_protected/playground/'
@@ -148,6 +160,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_protected/401': {
+      id: '/_protected/401'
+      path: '/401'
+      fullPath: '/401'
+      preLoaderRoute: typeof Protected401RouteImport
+      parentRoute: typeof ProtectedRoute
     }
     '/_auth/signin': {
       id: '/_auth/signin'
@@ -198,6 +217,7 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface ProtectedRouteChildren {
+  Protected401Route: typeof Protected401Route
   ProtectedCustomersCustomerIdRoute: typeof ProtectedCustomersCustomerIdRoute
   ProtectedCustomersIndexRoute: typeof ProtectedCustomersIndexRoute
   ProtectedPlaygroundIndexRoute: typeof ProtectedPlaygroundIndexRoute
@@ -205,6 +225,7 @@ interface ProtectedRouteChildren {
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
+  Protected401Route: Protected401Route,
   ProtectedCustomersCustomerIdRoute: ProtectedCustomersCustomerIdRoute,
   ProtectedCustomersIndexRoute: ProtectedCustomersIndexRoute,
   ProtectedPlaygroundIndexRoute: ProtectedPlaygroundIndexRoute,

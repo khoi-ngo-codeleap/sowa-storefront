@@ -13,6 +13,11 @@ const customerQueries = {
     }),
   detail: (customerId: string) =>
     queryOptions({
+      meta: {
+        errorMsg: {
+          PGRST116: "Customer not found",
+        },
+      },
       queryKey: [...customerQueries.all, "detail", customerId],
       queryFn: () => getCustomerById({ id: customerId }),
     }),

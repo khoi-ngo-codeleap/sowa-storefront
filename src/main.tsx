@@ -12,7 +12,7 @@ createRoot(document.getElementById("root")!, {
   }),
   // Callback called when React catches an error in an ErrorBoundary.
   onCaughtError: (...args) => {
-    alert("Caught error in ErrorBoundary");
+    console.log("main.ts: ", "Caught error in ErrorBoundary");
     const handler = Sentry.reactErrorHandler();
     handler(...args);
   },

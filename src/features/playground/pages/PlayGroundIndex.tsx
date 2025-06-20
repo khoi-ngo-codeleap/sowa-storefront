@@ -10,9 +10,13 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import customerQueries from "@/features/customer/domain/queries/customerQueries";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
 import { ChevronRight, Ellipsis, X } from "lucide-react";
 import { PropsWithChildren, ReactElement } from "react";
+import { AxiosError } from "axios";
+import Manifesto from "../components/Manifesto";
 
 const MenuItemLayout: React.FC<{
   text: string;
@@ -108,36 +112,45 @@ const DropdownMenuItem2: React.FC<
 };
 
 const PlayGroundIndex = () => {
+  const { data: events } = useQuery(
+    customerQueries.detail("a9cf301a-91a6-4a47-b5cb-85b3068edb83")
+  );
+
   return (
     <div>
-      <div className="w-[300px] flex flex-col gap-2">
-        <CloseableMenuItem text="Item 1" />
-
-        <CollapsibleMenuItem text="Item 2">
+      <div>
+        <div className="w-[300px] flex flex-col gap-2">
           <CloseableMenuItem text="Item 1" />
-          <CloseableMenuItem text="Item 1" />
-        </CollapsibleMenuItem>
 
-        <DropdownMenuItem2
-          text="Item 3"
-          items={[
-            { key: "1", text: "Edit contact information" },
-            { key: "2", text: "Manage addresses" },
-            { key: "3", text: "Edit tax details" },
-            { key: "4", text: "Add to company" },
-          ]}
-        />
+          <CollapsibleMenuItem text="Item 2">
+            <CloseableMenuItem text="Item 1" />
+            <CloseableMenuItem text="Item 1" />
+          </CollapsibleMenuItem>
 
-        <DropdownMenuItem2
-          text="Item 4"
-          items={[
-            { key: "1", text: "Edit contact information" },
-            { key: "2", text: "Manage addresses" },
-            { key: "3", text: "Edit tax details" },
-            { key: "4", text: "Add to company" },
-          ]}
-          icon={<Ellipsis />}
-        />
+          <DropdownMenuItem2
+            text="Item 3"
+            items={[
+              { key: "1", text: "Edit contact information" },
+              { key: "2", text: "Manage addresses" },
+              { key: "3", text: "Edit tax details" },
+              { key: "4", text: "Add to company" },
+            ]}
+          />
+
+          <DropdownMenuItem2
+            text="Item 4"
+            items={[
+              { key: "1", text: "Edit contact information" },
+              { key: "2", text: "Manage addresses" },
+              { key: "3", text: "Edit tax details" },
+              { key: "4", text: "Add to company" },
+            ]}
+            icon={<Ellipsis />}
+          />
+        </div>
+      </div>
+      <div>
+        <Manifesto />
       </div>
     </div>
   );

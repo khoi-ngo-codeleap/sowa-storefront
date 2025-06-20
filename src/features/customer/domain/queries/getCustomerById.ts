@@ -8,7 +8,7 @@ interface GetCustomerByIdVariable {
 export const getCustomerById = async ({
   id,
 }: GetCustomerByIdVariable): Promise<CustomerDetail> => {
-  const { data, error } = await supabase
+  const response = await supabase
     .from("customer")
     .select(
       `
@@ -39,9 +39,8 @@ export const getCustomerById = async ({
     orderAggregate:customer_order(id.count(), price.sum())`
     )
     .eq("id", id)
-    .single();
+    .single()
+    .throwOnError();
 
-  if (error) throw error;
-
-  return data;
+  return response.data;
 };

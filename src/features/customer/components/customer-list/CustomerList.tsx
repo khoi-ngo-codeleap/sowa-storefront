@@ -1,9 +1,14 @@
 import { DataTable } from "@/components/ui/data-table";
 import useCustomersQuery from "../../hooks/useCustomersQuery";
 import customerTableColumns from "./CustomerTableColumns";
+import { Alert } from "@/components/ui/alert";
 
 const CustomerList = () => {
-  const { status, data: customers = [] } = useCustomersQuery();
+  const { status, data: customers, error } = useCustomersQuery();
+
+  if (error) {
+    return <Alert variant="destructive">{error.message}</Alert>;
+  }
 
   return (
     <div className="flex flex-col gap-2 py-4">

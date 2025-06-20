@@ -1,52 +1,83 @@
 import { toast } from "@/hooks/use-toast";
+import { PostgrestError } from "@supabase/supabase-js";
 import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
-import { isAxiosError } from "axios";
+import { AxiosError, isAxiosError } from "axios";
+// - QueryClient:
+// 	* Can already be implemented and config per the repo.
+// 	* We can add stuffs like Sentry config here as well, and leave it in Internal React
 
+// 	* We need to have data validation based on Zod Schema
 declare module "@tanstack/react-query" {
   interface Register {
     mutationMeta: {
       successMsg?: string;
-      errorMsg?: string | Record<number, string>;
+      errorMsg?: string | Record<string | number, string>;
+    };
+    queryMeta: {
+      isToast?: boolean;
+      errorMsg?: string | Record<string | number, string>;
     };
   }
+}
+
+const defaultMsg: Record<string, string> = {
+  PGRST116: "Customer not found",
+};
+
+function getMessage(code: string, errorMsg: string | Record<string, string>) {
+  const fallbackMsg = "Oops, something went wrong";
+
+  if (typeof errorMsg === "string") {
+    return errorMsg;
+  }
+
+  if (typeof errorMsg === "object") {
+    return errorMsg[code] ?? defaultMsg[code];
+  }
+
+  return fallbackMsg;
 }
 
 const queryClient = new QueryClient({
   /** config query cache */
   queryCache: new QueryCache({
-    onError: (error) => {
-      if (isAxiosError(error) && error.response) {
-        // only show toast for server error
-        if (error.response.status >= 500) {
-          toast({title: "Oops! Something went wrong."});
-        }
+    onError: (error, query) => {
+      const { isToast = true, errorMsg } = query.meta ?? {};
+      if (!isToast) return;
+
+      console.log(error.name);
+      let message = "";
+      if (error instanceof PostgrestError) {
+        // handle postgrest error
       }
+
+      if (isAxiosError(error)) {
+        // handle axios error
+      }
+
+      // handle other errors
+      console.log(error.message);
     },
   }),
   /** config mutation cache */
   mutationCache: new MutationCache({
+    // ✅ show configured success message
     onSuccess: (_data, _variables, _context, mutation) => {
-      const { successMsg } = mutation.meta || {};
+      const { successMsg } = mutation.meta ?? {};
       if (successMsg) {
         toast({ title: successMsg, variant: "success" });
       }
     },
+    // ✅ show configured error message
     onError: (error, _variables, _context, mutation) => {
-      const { errorMsg } = mutation.meta || {};
+      const { errorMsg } = mutation.meta ?? {};
 
-      if (isAxiosError(error) && errorMsg) {
-        // one message for every status
-        if (typeof errorMsg === "string") {
-          toast({ title: errorMsg , variant: "destructive" });
-        }
+      if (error instanceof PostgrestError) {
+        // handle postgrest error
+      }
 
-        // delicate error messages base on status
-        if (typeof errorMsg === "object" && error.response) {
-          const message = errorMsg[error.response.status];
-          if (message) {
-            toast({ title: message , variant: "destructive" });
-          }
-        }
+      if (isAxiosError(error)) {
+        // handle axios error
       }
     },
   }),
