@@ -1,4 +1,4 @@
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, Globe, Mail, MapPin, Phone, XCircle } from "lucide-react";
 import useCustomerDetailQuery from "@/features/customer/hooks/useCustomerDetailQuery";
 import CustomerCardAction from "./CustomerCardAction";
@@ -6,12 +6,12 @@ import CustomerCardAction from "./CustomerCardAction";
 const CustomerCard = () => {
   const { data: customer } = useCustomerDetailQuery();
   return (
-    <Card className="w-full max-w-md rounded-2xl">
-      <CardContent className="px-3 py-4 space-y-4">
-        <div className="flex items-center justify-between">
-          <CardTitle>Customer</CardTitle>
-          <CustomerCardAction />
-        </div>
+    <Card>
+      <CardHeader className="flex items-center justify-between">
+        <CardTitle>Customer</CardTitle>
+        <CustomerCardAction />
+      </CardHeader>
+      <CardContent>
         <div>
           <h3 className="font-medium">Contact information</h3>
           <div className="flex items-center gap-2 mt-1">

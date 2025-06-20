@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import useCustomerDetailQuery from "@/features/customer/hooks/useCustomerDetailQuery";
 import { useModal } from "@/features/customer/state/modal";
 import { Pencil } from "lucide-react";
@@ -23,13 +23,13 @@ export default function NoteCard() {
 
   return (
     <Card className="w-full max-w-md rounded-2xl">
-      <CardContent className="px-3 py-3 space-y-1.5">
-        <div className="flex items-center justify-between">
-          <CardTitle>Note</CardTitle>
-          <Button variant="ghost" size="iconSm" onClick={handleEditNote}>
-            <Pencil className="w-4 h-4 cursor-pointer" />
-          </Button>
-        </div>
+      <CardHeader className="flex items-center justify-between">
+        <CardTitle>Note</CardTitle>
+        <Button variant="ghost" size="iconSm" onClick={handleEditNote}>
+          <Pencil className="w-4 h-4 cursor-pointer" />
+        </Button>
+      </CardHeader>
+      <CardContent>
         {customer.note ? <div>{customer.note}</div> : <EmptyNoteMessage />}
       </CardContent>
     </Card>

@@ -6,7 +6,7 @@ const StatsBar = () => {
   const { data: customer } = useCustomerDetailQuery();
   return (
     <Card className="w-full">
-      <CardContent className="p-6 space-y-4">
+      <CardContent className="space-y-4">
         <div className="grid grid-cols-4 gap-4">
           <div>
             <p className="font-medium">Amount spent</p>

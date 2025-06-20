@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Tooltip,
   TooltipContent,
@@ -11,21 +11,21 @@ const amount = 326;
 
 const StoreCreditCard = () => {
   return (
-    <Card className="w-full max-w-md rounded-2xl">
-      <CardContent className="px-3 py-3 space-y-1.5">
-        <div className="flex items-center justify-between">
-          <CardTitle>Store credit</CardTitle>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" size="iconSm">
-                <Pencil className="w-4 h-4 cursor-pointer" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Coming soon</p>
-            </TooltipContent>
-          </Tooltip>
-        </div>
+    <Card>
+      <CardHeader className="flex items-center justify-between">
+        <CardTitle>Store credit</CardTitle>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="ghost" size="iconSm">
+              <Pencil className="w-4 h-4 cursor-pointer" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Coming soon</p>
+          </TooltipContent>
+        </Tooltip>
+      </CardHeader>
+      <CardContent>
         <div className="flex items-center justify-between cursor-pointer">
           <div>${amount.toLocaleString()}</div>
           <div className="flex items-center gap-2 text-muted-foreground">

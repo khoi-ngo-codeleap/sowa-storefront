@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import dayjs, { SupportedFormats } from "@/lib/dayjs";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Tooltip,
   TooltipContent,
@@ -42,27 +42,29 @@ export function CustomerCommentTimelineEvent(
 ) {
   return (
     <TimelineItem>
-      <Card className="p-4 flex gap-3">
-        <div className="h-10 w-10 rounded-md bg-muted" />
-        <div className="flex-1">
-          <div className="inline-flex items-center space-x-2">
-            <span>{event.author.name}</span>
-            <span className="text-muted-foreground">
-              <FormattedTime time={event.createdAt} />
-            </span>
+      <Card>
+        <CardContent className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-md bg-muted" />
+          <div className="flex-1">
+            <div className="inline-flex items-center space-x-2">
+              <span>{event.author.name}</span>
+              <span className="text-muted-foreground">
+                <FormattedTime time={event.createdAt} />
+              </span>
+            </div>
+            <div>{event.payload.message}</div>
           </div>
-          <div>{event.payload.message}</div>
-        </div>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button size="icon" variant="ghost">
-              <Trash2 size={16} />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Coming soon</p>
-          </TooltipContent>
-        </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button size="icon" variant="ghost">
+                <Trash2 size={16} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Coming soon</p>
+            </TooltipContent>
+          </Tooltip>
+        </CardContent>
       </Card>
     </TimelineItem>
   );

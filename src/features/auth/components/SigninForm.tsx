@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import imgUrl from "/pencil.webp";
 
 const SigninForm: React.FC<React.ComponentProps<"div">> = ({
   className,
   ...props
 }) => {
+  console.log(imgUrl);
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
@@ -88,7 +90,7 @@ const SigninForm: React.FC<React.ComponentProps<"div">> = ({
           </form>
           <div className="bg-muted relative hidden md:block">
             <img
-              src="/placeholder.svg"
+              src={imgUrl}
               alt="Image"
               className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />

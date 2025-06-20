@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   Tooltip,
@@ -15,13 +15,11 @@ interface TagItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   name: string;
 }
 
-function TagItem({ name, ...props }: TagItemProps) {
+function TagItem({ name }: TagItemProps) {
   return (
-    <Badge className="py-0 pr-0 hover:bg-primary">
+    <Badge className="py-0 pr-1 hover:bg-primary">
       {name}
-      <Button size="iconXs" {...props}>
-        <XIcon className="cursor-pointer hover:bg-slate-300" />
-      </Button>
+      <XIcon className="cursor-pointer hover:bg-slate-300" />
     </Badge>
   );
 }
@@ -32,29 +30,29 @@ const TagCard = () => {
     return customer.tags.filter((tag) => tag.enabled);
   }, [customer]);
   return (
-    <Card className="w-full max-w-md rounded-2xl">
-      <CardContent className="px-3 py-3 space-y-1.5">
-        <div className="flex items-center justify-between">
-          <CardTitle>Tags</CardTitle>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" size="iconSm">
-                <Pencil className="w-4 h-4 cursor-pointer" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Coming soon</p>
-            </TooltipContent>
-          </Tooltip>
-        </div>
-        <div className="mb-1 space-y-2">
+    <Card>
+      <CardHeader className="flex items-center justify-between">
+        <CardTitle>Tags</CardTitle>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="ghost" size="iconSm">
+              <Pencil className="w-4 h-4 cursor-pointer" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Coming soon</p>
+          </TooltipContent>
+        </Tooltip>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
           <Input />
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
               <TagItem
                 key={tag.tagId}
                 name={tag.tagId}
-                onClick={() => alert("ê")}
+                onClick={() => alert(tag.tagId)}
               />
             ))}
           </div>
