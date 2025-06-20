@@ -75,7 +75,7 @@ export const Timeline = ({
   return (
     <div
       className={cn(
-        "relative flex flex-col pt-14 [&>*]:z-10",
+        "relative flex flex-col pt-14 *:z-10",
         "before:h-full before:w-1 before:absolute before:top-0 before:left-8 before:translate-x-1.5 before:bg-secondary",
         className
       )}

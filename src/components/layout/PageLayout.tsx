@@ -11,7 +11,7 @@ export function PageContent({ children }: React.PropsWithChildren) {
 export function PageWrapper({ children }: React.PropsWithChildren) {
   return (
     <div className="h-full">
-      <div className="max-w-screen-lg mx-auto flex flex-col gap-4 py-4">
+      <div className="max-w-(--breakpoint-lg) mx-auto flex flex-col gap-4 py-4">
         {children}
       </div>
     </div>
