@@ -2,9 +2,9 @@ import SigninForm from "../components/SigninForm";
 
 const Signin = () => {
   return (
-    <div className="bg-[#fef4de69] flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
+    <main className="bg-[#fef4de69] min-h-svh flex flex-col items-center justify-center text-center  p-6 md:p-10">
       <SigninForm className="w-[768px] max-w-full" />
-    </div>
+    </main>
   );
 };
 

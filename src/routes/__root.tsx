@@ -10,18 +10,20 @@ interface RouterContext {
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-  component: () => (
-    <>
-      <Outlet />
-      <DevTools
-        position="top-right"
-        options={{
-          shouldShowPrivateAtoms: true,
-          shouldExpandJsonTreeViewInitially: true,
-        }}
-      />
-      <TanStackRouterDevtools />
-      <ReactQueryDevtools />
-    </>
-  ),
+  component: () => {
+    return (
+      <>
+        <Outlet />
+        <DevTools
+          position="top-right"
+          options={{
+            shouldShowPrivateAtoms: true,
+            shouldExpandJsonTreeViewInitially: true,
+          }}
+        />
+        <TanStackRouterDevtools />
+        <ReactQueryDevtools />
+      </>
+    );
+  },
 });

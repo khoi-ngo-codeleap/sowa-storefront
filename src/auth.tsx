@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import supabase from "./api/client/supabase";
+import { Session } from "@supabase/supabase-js";
 
 export interface AuthContext {
   isAuthenticated: boolean;
@@ -25,6 +27,7 @@ const useUserStore = () => {
 export const AuthProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
+  const [session, setSession] = useState<Session | null>(null);
   const { user, setUser } = useUserStore();
   const isAuthenticated = !!user;
 
@@ -37,7 +40,20 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({
   }, []);
 
   useEffect(() => {
+    // todo: remove this line
     setUser(localStorage.getItem(key));
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   return (
