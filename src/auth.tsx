@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import supabase from "./api/client/supabase";
 import { useNavigate, useRouteContext } from "@tanstack/react-router";
 import { User } from "@supabase/supabase-js";
@@ -19,16 +19,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({
   const logout = useCallback(async () => {
     await supabase.auth.signOut();
     navigate({ to: "/signin" });
-  }, []);
-
-  useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      console.info("auth state change", session);
-    });
-
-    return () => subscription.unsubscribe();
   }, []);
 
   const value = useMemo(() => {

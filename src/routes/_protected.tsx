@@ -25,8 +25,9 @@ function LayoutComponent() {
       <AppSidebar />
       <SidebarInset>
         <div className="flex items-center justify-end px-4 py-2">
-          <div>{JSON.stringify(user, null, 2)}</div>
-          <Button onClick={logout}>Sign out</Button>
+          <Button onClick={logout} size="sm">
+            Sign out
+          </Button>
         </div>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0 ">
           <Outlet />
