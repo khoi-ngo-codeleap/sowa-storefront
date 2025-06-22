@@ -1,66 +1,44 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import supabase from "./api/client/supabase";
-import { Session } from "@supabase/supabase-js";
+import { useNavigate, useRouteContext } from "@tanstack/react-router";
+import { User } from "@supabase/supabase-js";
 
 export interface AuthContext {
-  isAuthenticated: boolean;
-  login: (username: string) => Promise<void>;
   logout: () => Promise<void>;
-  user: string | null;
+  user: User | null;
 }
 
 const AuthContext = React.createContext<AuthContext | null>(null);
 
-const key = "tanstack.auth.user";
-
-const useUserStore = () => {
-  const [user, setUserState] = React.useState<string | null>(() =>
-    localStorage.getItem(key)
-  );
-  const setUser = useCallback((user: string | null) => {
-    setUserState(user);
-    user ? localStorage.setItem(key, user) : localStorage.removeItem(key);
-  }, []);
-  return { user, setUser };
-};
-
 export const AuthProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const [session, setSession] = useState<Session | null>(null);
-  const { user, setUser } = useUserStore();
-  const isAuthenticated = !!user;
+  const navigate = useNavigate();
+  const { auth } = useRouteContext({ from: "__root__" });
 
-  const logout = React.useCallback(async () => {
-    setUser(null);
-  }, []);
-
-  const login = React.useCallback(async (username: string) => {
-    setUser(username);
+  const logout = useCallback(async () => {
+    await supabase.auth.signOut();
+    navigate({ to: "/signin" });
   }, []);
 
   useEffect(() => {
-    // todo: remove this line
-    setUser(localStorage.getItem(key));
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
+      console.info("auth state change", session);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const value = useMemo(() => {
+    return {
+      logout,
+      user: auth.user,
+    };
+  }, [auth.user, logout]);
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export function useAuth() {
