@@ -1,158 +1,183 @@
+import LoadingIndicator from "@/components/LoadingIndicator";
+import QueryErrorBoundary from "@/components/QueryErrorBoundary";
 import { Button } from "@/components/ui/button";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
-  DropdownMenu,
-  DropdownMenuItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import customerQueries from "@/features/customer/domain/queries/customerQueries";
+import { Customer } from "@/features/customer/domain/types/customer";
+import CustomerDetail from "@/features/customer/pages/CustomerDetail";
 import { cn } from "@/lib/utils";
+import { CustomerIdContext } from "@/providers/CustomerIdContext";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronRight, Ellipsis, X } from "lucide-react";
-import { PropsWithChildren, ReactElement } from "react";
-import Manifesto from "../components/Manifesto";
+import { atom, Provider, useAtomValue, useSetAtom } from "jotai";
+import { X } from "lucide-react";
+import { Suspense, use, useCallback, useRef, useState } from "react";
+import { set } from "zod";
 
-const MenuItemLayout: React.FC<{
+export interface Tab {
+  id: string;
   text: string;
-  icon?: ReactElement;
-  action?: ReactElement;
-}> = ({ text, icon, action }) => {
-  return (
-    <div
-      className={cn(
-        "relative h-10 py-1.5 px-3 flex items-center gap-2 border rounded-lg overflow-hidden hover:bg-muted",
-        action && "pr-9"
-      )}
-    >
-      {icon}
-      <div className="flex-1">{text}</div>
-      {action && <div className="absolute right-1.5">{action}</div>}
-    </div>
-  );
-};
+}
 
-const CloseableMenuItem: React.FC<{
-  text: string;
-  icon?: ReactElement;
-}> = (props) => {
-  const TriggerButton = (
-    <Button variant="ghost" size="iconSm">
-      <X />
-    </Button>
-  );
+export const createTabAtoms = () => {
+  const activeTab = atom<string | null>(null);
+  const tabsAtom = atom<Tab[]>([]);
 
-  return <MenuItemLayout {...props} action={TriggerButton} />;
-};
-
-const CollapsibleMenuItem: React.FC<
-  PropsWithChildren<{
-    text: string;
-    icon?: ReactElement;
-  }>
-> = ({ children, ...props }) => {
-  const TriggerButton = (
-    <CollapsibleTrigger asChild>
-      <Button variant="ghost" size="iconSm">
-        <ChevronRight />
-      </Button>
-    </CollapsibleTrigger>
-  );
-
-  if (!children) {
-    return <MenuItemLayout {...props} action={TriggerButton} />;
-  }
-
-  return (
-    <Collapsible>
-      <MenuItemLayout {...props} action={TriggerButton} />
-      <CollapsibleContent>
-        <div className="ml-3 mt-3">{children}</div>
-      </CollapsibleContent>
-    </Collapsible>
-  );
-};
-
-const DropdownMenuItem2: React.FC<
-  PropsWithChildren<{
-    text: string;
-    icon?: ReactElement;
-    items?: { key: string; text: string; onClick?: () => void }[];
-  }>
-> = ({ children, items, ...props }) => {
-  const TriggerButton = (
-    <DropdownMenuTrigger asChild>
-      <Button variant="ghost" size="iconSm">
-        <Ellipsis />
-      </Button>
-    </DropdownMenuTrigger>
-  );
-
-  if (!items?.length) {
-    return <MenuItemLayout {...props} action={TriggerButton} />;
-  }
-
-  return (
-    <DropdownMenu>
-      <MenuItemLayout {...props} action={TriggerButton} />
-      <DropdownMenuContent className="w-48 rounded-lg">
-        {items.map(({ key, text, onClick }) => (
-          <DropdownMenuItem key={key} onClick={onClick}>
-            <span>{text}</span>
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-};
-
-const PlayGroundIndex = () => {
-  useQuery({
-    ...customerQueries.detail("a9cf301a-91a6-4a47-b5cb-85b3068edb83"),
+  const setTabAtom = atom(null, (_get, set, tabId: string) => {
+    set(activeTab, tabId);
   });
 
+  const addTabAtom = atom(null, (get, set, newTab: Tab) => {
+    const current = get(tabsAtom);
+    // make sure no duplicates
+    if (!current.some((tab) => tab.id === newTab.id)) {
+      set(tabsAtom, [...current, newTab]);
+      set(activeTab, newTab.id);
+    }
+  });
+
+  const removeTabAtom = atom(null, (get, set, tabId: string) => {
+    const currentTabs = get(tabsAtom);
+    const currentActiveTab = get(activeTab);
+    const updatedTabs = currentTabs.filter((tab) => tab.id !== tabId);
+
+    // Update tabs first
+    set(tabsAtom, updatedTabs);
+
+    // Handle active tab selection
+    if (currentActiveTab === tabId) {
+      // If we're removing the active tab
+      if (updatedTabs.length > 0) {
+        // Find the index of the removed tab
+        const removedIndex = currentTabs.findIndex((tab) => tab.id === tabId);
+        // Select the next tab if available, otherwise the previous one
+        const newActiveIndex = Math.min(removedIndex, updatedTabs.length - 1);
+        set(activeTab, updatedTabs[newActiveIndex].id);
+      } else {
+        // If no tabs remain
+        set(activeTab, null);
+      }
+    }
+    // Otherwise keep the current active tab
+  });
+
+  return { tabsAtom, activeTab, addTabAtom, removeTabAtom, setTabAtom };
+};
+
+const {
+  activeTab: customerActiveTabAtom,
+  setTabAtom: setCustomerActiveTabAtom,
+  tabsAtom: customerTabsAtom,
+  addTabAtom: addCustomerTabAtom,
+  removeTabAtom: removeCustomerTabAtom,
+} = createTabAtoms();
+
+const PlayGroundIndex = () => {
+  const { status, data: customers = [] } = useQuery(customerQueries.list());
+
   return (
-    <div>
-      <div>
+    <Provider>
+      <div className="flex gap-4 h-full items-stretch">
         <div className="w-[300px] flex flex-col gap-2">
-          <CloseableMenuItem text="Item 1" />
-
-          <CollapsibleMenuItem text="Item 2">
-            <CloseableMenuItem text="Item 1" />
-            <CloseableMenuItem text="Item 1" />
-          </CollapsibleMenuItem>
-
-          <DropdownMenuItem2
-            text="Item 3"
-            items={[
-              { key: "1", text: "Edit contact information" },
-              { key: "2", text: "Manage addresses" },
-              { key: "3", text: "Edit tax details" },
-              { key: "4", text: "Add to company" },
-            ]}
-          />
-
-          <DropdownMenuItem2
-            text="Item 4"
-            items={[
-              { key: "1", text: "Edit contact information" },
-              { key: "2", text: "Manage addresses" },
-              { key: "3", text: "Edit tax details" },
-              { key: "4", text: "Add to company" },
-            ]}
-            icon={<Ellipsis />}
-          />
+          {status === "pending"
+            ? "Loading..."
+            : customers.map((customer) => (
+                <CustomerItem key={customer.id} customer={customer} />
+              ))}
+        </div>
+        <div className="flex-1 border border-dashed">
+          <CustomerTabs />
         </div>
       </div>
-      <div>
-        <Manifesto />
-      </div>
-    </div>
+    </Provider>
   );
 };
 
+function CustomerItem({ customer }: { customer: Customer }) {
+  const addProductTab = useSetAtom(addCustomerTabAtom);
+  return (
+    <Card
+      className="py-1 hover:text-blue-400 cursor-pointer"
+      onClick={() =>
+        addProductTab({ id: customer.id, text: customer.displayName })
+      }
+    >
+      <CardContent>{customer.displayName}</CardContent>
+    </Card>
+  );
+}
+
+function CustomerTabs({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  const customerTabs = useAtomValue(customerTabsAtom);
+  const customerActiveTab = useAtomValue(customerActiveTabAtom);
+  const setCustomerActiveTab = useSetAtom(setCustomerActiveTabAtom);
+  const removeCustomerTabs = useSetAtom(removeCustomerTabAtom);
+
+  if (!customerTabs.length) {
+    return (
+      <div className="border border-dashed flex h-full w-full items-center justify-center">
+        No customer selected
+      </div>
+    );
+  }
+
+  return (
+    <div className={cn("flex w-full flex-col gap-6", className)} {...props}>
+      <Tabs
+        value={
+          customerActiveTab ? `customer-tab-${customerActiveTab}` : undefined
+        }
+        onValueChange={(value) => {
+          const tabId = value.replace("customer-tab-", "");
+          setCustomerActiveTab(tabId);
+        }}
+      >
+        <TabsList>
+          {customerTabs.map((tab) => (
+            <TabsTrigger
+              key={tab.id}
+              value={`customer-tab-${tab.id}`}
+              onClick={() => setCustomerActiveTab(tab.id)}
+              className="pr-0!"
+            >
+              {tab.text}
+              <Button
+                size="iconSm"
+                variant="ghost"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeCustomerTabs(tab.id);
+                }}
+              >
+                <X size={16} />
+              </Button>
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        {customerTabs.map((tab) => (
+          <TabsContent key={tab.id} value={`customer-tab-${tab.id}`}>
+            <CustomerTabContent customerId={tab.id} />
+          </TabsContent>
+        ))}
+      </Tabs>
+    </div>
+  );
+}
+
+function CustomerTabContent({ customerId }: { customerId: string }) {
+  return (
+    <Provider>
+      <CustomerIdContext value={customerId}>
+        <QueryErrorBoundary>
+          <Suspense fallback={<LoadingIndicator />}>
+            <CustomerDetail />
+          </Suspense>
+        </QueryErrorBoundary>
+      </CustomerIdContext>
+    </Provider>
+  );
+}
 export default PlayGroundIndex;
