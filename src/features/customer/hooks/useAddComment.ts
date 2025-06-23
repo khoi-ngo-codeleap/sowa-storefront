@@ -6,8 +6,7 @@ import customerQueries from "../domain/queries/customerQueries";
 export default function useAddComment() {
   return useMutation({
     meta: {
-      successMsg: "Comment has been added successfully",
-      errorMsg: "Opp!, something went wrong",
+      successMessage: "Comment has been added successfully",
     },
     mutationFn: addComment,
     onSuccess: (_data, variables) => {

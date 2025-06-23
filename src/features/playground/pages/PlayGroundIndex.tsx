@@ -15,7 +15,6 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronRight, Ellipsis, X } from "lucide-react";
 import { PropsWithChildren, ReactElement } from "react";
-import { AxiosError } from "axios";
 import Manifesto from "../components/Manifesto";
 
 const MenuItemLayout: React.FC<{
@@ -112,9 +111,9 @@ const DropdownMenuItem2: React.FC<
 };
 
 const PlayGroundIndex = () => {
-  const { data: events } = useQuery(
-    customerQueries.detail("a9cf301a-91a6-4a47-b5cb-85b3068edb83")
-  );
+  useQuery({
+    ...customerQueries.detail("a9cf301a-91a6-4a47-b5cb-85b3068edb83"),
+  });
 
   return (
     <div>

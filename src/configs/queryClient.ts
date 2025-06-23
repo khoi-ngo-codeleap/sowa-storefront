@@ -1,61 +1,98 @@
 import { toast } from "sonner";
 import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
-import classifyError, { ClassifiedError } from "@/lib/classifyError";
-// - QueryClient:
-// 	* Can already be implemented and config per the repo.
-// 	* We can add stuffs like Sentry config here as well, and leave it in Internal React
-
-// 	* We need to have data validation based on Zod Schema
+import classifyError, { ErrorType } from "@/lib/classifyError";
 
 declare module "@tanstack/react-query" {
   interface Register {
     mutationMeta: {
-      successMsg?: string;
-      errorMsg?: Record<string | keyof ClassifiedError, string>;
+      successMessage?: string;
+
+      // 👇 specific error message as a string when you want to override the default
+      errorMessage?: string | Partial<Record<ErrorType, string>>;
+      showErrorToast?: boolean | ((type: ErrorType) => boolean);
     };
     queryMeta: {
-      errorMsg?: Record<string | keyof ClassifiedError, string>;
+      successMessage?: string;
+
+      // 👇 specific error message as a string when you want to override the default
+      errorMessage?: string | Partial<Record<ErrorType, string>>;
+      showErrorToast?: boolean | ((type: ErrorType) => boolean);
     };
   }
 }
 
+// 👇 Shared utility for consistent toast logic
+function handleGlobalToast({
+  error,
+  message,
+  showErrorToast,
+  defaultToast = false,
+}: {
+  error: Error;
+  message?: string | Partial<Record<ErrorType, string>>;
+  showErrorToast?: boolean | ((type: ErrorType) => boolean);
+  defaultToast?: boolean;
+}) {
+  // ✅ Classify the error into a known type and get a safe default message
+  const classified = classifyError(error);
+
+  // ✅ Determine whether this error should show a toast
+  const shouldToast =
+    typeof showErrorToast === "function"
+      ? showErrorToast(classified.type)
+      : (showErrorToast ?? defaultToast);
+
+  // 🫢 Silent fail
+  if (!shouldToast) return null;
+
+  // ✅ Determine the appropriate message to show
+  const fallback = classified.message;
+  const customMessage =
+    typeof message === "string"
+      ? message
+      : typeof message === "object" && message[classified.type]
+        ? message[classified.type]
+        : fallback;
+
+  return customMessage;
+}
+
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
-    onError: (error, query) => {
-      const { errorMsg } = query.meta ?? {};
+    onError: (_error, query) => {
+      console.warn(`[Query Error]:`, _error);
 
-      // ✅ classify error
-      const { type, message } = classifyError(error);
+      const toastMessage = handleGlobalToast({
+        error: _error,
+        message: query.meta?.errorMessage,
+        showErrorToast: query.meta?.showErrorToast,
+        defaultToast: false, // ✅ Don't show toast unless explicitly opted-in
+      });
 
-      // ✅ show error to console or sent it to sentry
-      console.warn(`[Query Error - ${type}]:`, message);
-
-      // ✅ show configured error message
-      if (typeof errorMsg === "object" && type in errorMsg) {
-        toast(errorMsg[type]);
-      }
+      if (toastMessage) toast(toastMessage);
     },
   }),
   mutationCache: new MutationCache({
     onSuccess: (_data, _variables, _context, mutation) => {
-      // ✅ show configured success message
-      const { successMsg } = mutation.meta ?? {};
-      successMsg && toast(successMsg);
-    },
-    // ✅ show configured error message
-    onError: (error, _variables, _context, mutation) => {
-      const { errorMsg } = mutation.meta ?? {};
-      const { type, message } = classifyError(error);
-
-      // ✅ show error to console or sent it to sentry
-      console.warn(`[Mutation Error - ${type}]:`, message);
-
-      // ✅ show configured error message
-      if (typeof errorMsg === "object" && type in errorMsg) {
-        toast(errorMsg[type]);
+      const message = mutation.meta?.successMessage;
+      if (message) {
+        toast(message);
       }
     },
+    onError: (error, _variables, _context, mutation) => {
+      console.warn(`[Mutation Error]:`, error);
+
+      const toastMessage = handleGlobalToast({
+        error,
+        message: mutation.meta?.errorMessage,
+        showErrorToast: mutation.meta?.showErrorToast,
+        defaultToast: true, // ✅ Show toast by default for mutations
+      });
+
+      if (toastMessage) toast(toastMessage);
+    },
   }),
+
   // 👇 we should remove this line i just setup this for debug
   defaultOptions: {
     queries: {

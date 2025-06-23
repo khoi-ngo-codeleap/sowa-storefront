@@ -6,8 +6,7 @@ import customerQueries from "../domain/queries/customerQueries";
 export default function useUpdateCustomer() {
   return useMutation({
     meta: {
-      successMsg: "Customer contact updated successfully",
-      errorMsg: "Opp!, something went wrong",
+      successMessage: "Customer contact updated successfully",
     },
     mutationFn: updateCustomer,
     onSuccess: (_data, _variables) => {

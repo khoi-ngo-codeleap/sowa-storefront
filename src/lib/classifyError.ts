@@ -1,49 +1,82 @@
 import { PostgrestError } from "@supabase/supabase-js";
-import { isAxiosError } from "axios";
+import { AxiosError, isAxiosError } from "axios";
 
-function classifyAxiosStatus(status: number) {
-  if (status === 401) return "Unauthorized";
-  if (status === 403) return "Forbidden";
-  if (status === 404) return "NotFound";
-  if (status >= 500) return "ServerError";
-  if (status >= 400) return "ClientError";
-  return "NetworkError";
-}
-
-function classifyPostgrestError(error: PostgrestError) {
-  const code = error.code;
-  switch (code) {
-    case "PGRST116":
-      return "NotFound";
-  }
-
-  return "PostgrestError";
-}
+export type ErrorType =
+  | "JavaScriptError"
+  | "UnknownError"
+  | "NetworkError"
+  | "Unauthorized"
+  | "Forbidden"
+  | "NotFound"
+  | "UnprocessableEntity"
+  | "BadRequest"
+  | "Conflict"
+  | "ClientError"
+  | "ServerError"
+  | "PostgrestError";
 
 export type ClassifiedError = {
-  type:
-    | "JavaScriptError"
-    | "UnknownError"
-    | ReturnType<typeof classifyAxiosStatus>
-    | ReturnType<typeof classifyPostgrestError>;
+  type: ErrorType;
   message: string;
 };
 
+const definedMessages: Record<ErrorType, string> = {
+  JavaScriptError: "Unexpected error occurred",
+  UnknownError: "Unexpected error occurred",
+  NetworkError: "Bad network connection",
+  Unauthorized: "You are not authorized",
+  Forbidden: "You do not have permission",
+  NotFound: "Requested resource not found",
+  UnprocessableEntity: "Validation failed",
+  BadRequest: "Invalid request",
+  Conflict: "Conflict occurred",
+  ClientError: "A client-side error occurred",
+  ServerError: "A server-side error occurred",
+  PostgrestError: "Database error occurred",
+};
+
+function classifyAxiosStatus(error: AxiosError): ErrorType {
+  const status = error.response?.status ?? 0;
+
+  if (!status) return "NetworkError";
+  if (status === 401) return "Unauthorized";
+  if (status === 403) return "Forbidden";
+  if (status === 404) return "NotFound";
+  if (status === 422) return "UnprocessableEntity";
+  if (status === 400) return "BadRequest";
+  if (status === 409) return "Conflict";
+  if (status >= 500) return "ServerError";
+  if (status >= 400) return "ClientError";
+
+  return "UnknownError";
+}
+
+function classifyPostgrestError(error: PostgrestError): ErrorType {
+  switch (error.code) {
+    case "PGRST116":
+      return "NotFound";
+    default:
+      return "PostgrestError";
+  }
+}
+
 export default function classifyError(error: unknown): ClassifiedError {
   if (error instanceof PostgrestError) {
-    return { type: classifyPostgrestError(error), message: error.message };
+    const type = classifyPostgrestError(error);
+    return { type, message: definedMessages[type] };
   }
 
   if (isAxiosError(error)) {
-    const status = error.response?.status ?? 0;
-    const type = classifyAxiosStatus(status);
-    const message = error.response?.data?.message || error.message;
-    return { type, message };
+    const type = classifyAxiosStatus(error);
+    return { type, message: definedMessages[type] };
   }
 
   if (error instanceof Error) {
-    return { type: "JavaScriptError", message: error.message };
+    return {
+      type: "JavaScriptError",
+      message: definedMessages["JavaScriptError"],
+    };
   }
 
-  return { type: "UnknownError", message: "Unexpected error occurred" };
+  return { type: "UnknownError", message: definedMessages["UnknownError"] };
 }

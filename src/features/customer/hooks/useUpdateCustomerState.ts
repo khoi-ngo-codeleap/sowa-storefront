@@ -11,8 +11,7 @@ interface UpdateCustomerStateVariables {
 export default function useUpdateCustomerState() {
   return useMutation({
     meta: {
-      successMsg: "Comment has been added successfully",
-      errorMsg: "Opp!, something went wrong",
+      successMessage: "Customer contact updated successfully",
     },
     mutationFn: (variables: UpdateCustomerStateVariables) =>
       updateCustomer({

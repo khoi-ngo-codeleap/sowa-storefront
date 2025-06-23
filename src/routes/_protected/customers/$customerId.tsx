@@ -2,11 +2,7 @@ import LoadingIndicator from "@/components/LoadingIndicator";
 import CustomerDetail from "@/features/customer/pages/CustomerDetail";
 import { CustomerIdContext } from "@/providers/CustomerIdContext";
 // import { ErrorBoundary } from "@sentry/react";
-import {
-  createFileRoute,
-  useNavigate,
-  useParams,
-} from "@tanstack/react-router";
+import { createFileRoute, useParams } from "@tanstack/react-router";
 import { PropsWithChildren, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { QueryErrorResetBoundary } from "@tanstack/react-query";
@@ -49,7 +45,6 @@ function CustomErrorBoundary({ children }: PropsWithChildren) {
 }
 
 function RouteComponent() {
-  const navigate = useNavigate({ from: "/customers/$customerId" });
   const customerId = useParams({
     from: "/_protected/customers/$customerId",
     select: (params) => params.customerId,
