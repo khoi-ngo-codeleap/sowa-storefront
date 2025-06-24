@@ -34,14 +34,14 @@ export const getCustomers = async ({
         count: "exact",
       }
     )
-    .order("email", { ascending: false });
+    .order("email", { ascending: false })
+    .throwOnError();
+
   if (filters?.state) {
     query.eq("state", filters.state);
   }
 
-  const { data, error } = await query;
-
-  if (error) throw error;
+  const { data } = await query;
 
   return data;
 };

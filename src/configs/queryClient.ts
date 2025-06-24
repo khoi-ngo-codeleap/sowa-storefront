@@ -1,6 +1,7 @@
 import { toast } from "sonner";
 import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
 import classifyError, { ErrorType } from "@/lib/classifyError";
+import * as Sentry from "@sentry/react";
 
 declare module "@tanstack/react-query" {
   interface Register {
@@ -53,17 +54,15 @@ function handleGlobalToast({
       : typeof message === "object" && message[classified.type]
         ? message[classified.type]
         : fallback;
-
   return customMessage;
 }
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
-    onError: (_error, query) => {
-      console.warn(`[Query Error]:`, _error);
-
+    onError: (error, query) => {
+      Sentry.captureException(error);
       const toastMessage = handleGlobalToast({
-        error: _error,
+        error,
         message: query.meta?.errorMessage,
         showErrorToast: query.meta?.showErrorToast,
         defaultToast: false, // ✅ Don't show toast unless explicitly opted-in
@@ -80,8 +79,7 @@ const queryClient = new QueryClient({
       }
     },
     onError: (error, _variables, _context, mutation) => {
-      console.warn(`[Mutation Error]:`, error);
-
+      Sentry.captureException(error);
       const toastMessage = handleGlobalToast({
         error,
         message: mutation.meta?.errorMessage,
@@ -96,7 +94,7 @@ const queryClient = new QueryClient({
   // 👇 we should remove this line i just setup this for debug
   defaultOptions: {
     queries: {
-      retry: 2,
+      retry: 0,
     },
   },
 });
