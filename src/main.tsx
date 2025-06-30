@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import * as Sentry from "@sentry/react";
 import App from "@/app/App";
-import "./configs/instrument";
+// import "./configs/instrument";
 import "./index.css";
 
 createRoot(document.getElementById("root")!, {
@@ -14,8 +14,4 @@ createRoot(document.getElementById("root")!, {
   onCaughtError: Sentry.reactErrorHandler(),
   // Callback called when React automatically recovers from errors.
   onRecoverableError: Sentry.reactErrorHandler(),
-}).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+}).render(<App />);

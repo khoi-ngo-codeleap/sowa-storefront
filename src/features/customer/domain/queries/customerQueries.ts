@@ -10,6 +10,7 @@ const customerQueries = {
     queryOptions({
       queryKey: [...customerQueries.all, "list", variables],
       queryFn: () => getCustomers(variables),
+      staleTime: 5 * 60 * 1000,
     }),
   detail: (customerId: string) =>
     queryOptions({

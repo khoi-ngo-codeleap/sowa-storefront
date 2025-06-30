@@ -10,6 +10,14 @@ type ModalPayloadMap = {
     email: string;
     phone: string;
   };
+  editContactNew: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    locale: string;
+    email: string;
+    phone: string;
+  };
   //   manageAddress: { id: string };
   //   editMarketingSetting: { prefillCustomerId?: string };
   //   editTax: { invoiceId: string };

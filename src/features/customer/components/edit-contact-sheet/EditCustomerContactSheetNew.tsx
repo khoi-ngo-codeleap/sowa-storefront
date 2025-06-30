@@ -8,9 +8,9 @@ import {
 import { useModal, useModalState } from "../../state/modal";
 import CustomerContactForm from "../form/CustomerContactForm";
 
-const EditCustomerContactSheet = () => {
-  const { isOpen, close, onChange } = useModal("editContact");
-  const draftCustomer = useModalState("editContact");
+const EditCustomerContactSheetNew = () => {
+  const { isOpen, close, onChange } = useModal("editContactNew");
+  const draftCustomer = useModalState("editContactNew");
 
   return (
     <Sheet open={isOpen} onOpenChange={onChange}>
@@ -25,7 +25,7 @@ const EditCustomerContactSheet = () => {
           <CustomerContactForm
             customer={draftCustomer}
             onCompleted={close}
-            featureFlag="old"
+            featureFlag="new"
           />
         </div>
       </SheetContent>
@@ -33,4 +33,4 @@ const EditCustomerContactSheet = () => {
   );
 };
 
-export default EditCustomerContactSheet;
+export default EditCustomerContactSheetNew;

@@ -16,7 +16,9 @@ import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
 import { Route as Protected401RouteImport } from './routes/_protected/401'
 import { Route as ProtectedPlaygroundIndexRouteImport } from './routes/_protected/playground/index'
 import { Route as ProtectedCustomersIndexRouteImport } from './routes/_protected/customers/index'
+import { Route as ProtectedCustomerPlaygroundIndexRouteImport } from './routes/_protected/customer-playground/index'
 import { Route as ProtectedCustomersCustomerIdRouteImport } from './routes/_protected/customers/$customerId'
+import { Route as ProtectedCustomerPlaygroundCustomerIdRouteImport } from './routes/_protected/customer-playground/$customerId'
 import { Route as ProtectedCustomersNewIndexRouteImport } from './routes/_protected/customers/new/index'
 
 const SigninRoute = SigninRouteImport.update({
@@ -54,10 +56,22 @@ const ProtectedCustomersIndexRoute = ProtectedCustomersIndexRouteImport.update({
   path: '/customers/',
   getParentRoute: () => ProtectedRoute,
 } as any)
+const ProtectedCustomerPlaygroundIndexRoute =
+  ProtectedCustomerPlaygroundIndexRouteImport.update({
+    id: '/customer-playground/',
+    path: '/customer-playground/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
 const ProtectedCustomersCustomerIdRoute =
   ProtectedCustomersCustomerIdRouteImport.update({
     id: '/customers/$customerId',
     path: '/customers/$customerId',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedCustomerPlaygroundCustomerIdRoute =
+  ProtectedCustomerPlaygroundCustomerIdRouteImport.update({
+    id: '/customer-playground/$customerId',
+    path: '/customer-playground/$customerId',
     getParentRoute: () => ProtectedRoute,
   } as any)
 const ProtectedCustomersNewIndexRoute =
@@ -73,7 +87,9 @@ export interface FileRoutesByFullPath {
   '/signin': typeof SigninRoute
   '/401': typeof Protected401Route
   '/auth/callback': typeof AuthCallbackRoute
+  '/customer-playground/$customerId': typeof ProtectedCustomerPlaygroundCustomerIdRoute
   '/customers/$customerId': typeof ProtectedCustomersCustomerIdRoute
+  '/customer-playground': typeof ProtectedCustomerPlaygroundIndexRoute
   '/customers': typeof ProtectedCustomersIndexRoute
   '/playground': typeof ProtectedPlaygroundIndexRoute
   '/customers/new': typeof ProtectedCustomersNewIndexRoute
@@ -84,7 +100,9 @@ export interface FileRoutesByTo {
   '/signin': typeof SigninRoute
   '/401': typeof Protected401Route
   '/auth/callback': typeof AuthCallbackRoute
+  '/customer-playground/$customerId': typeof ProtectedCustomerPlaygroundCustomerIdRoute
   '/customers/$customerId': typeof ProtectedCustomersCustomerIdRoute
+  '/customer-playground': typeof ProtectedCustomerPlaygroundIndexRoute
   '/customers': typeof ProtectedCustomersIndexRoute
   '/playground': typeof ProtectedPlaygroundIndexRoute
   '/customers/new': typeof ProtectedCustomersNewIndexRoute
@@ -96,7 +114,9 @@ export interface FileRoutesById {
   '/signin': typeof SigninRoute
   '/_protected/401': typeof Protected401Route
   '/auth/callback': typeof AuthCallbackRoute
+  '/_protected/customer-playground/$customerId': typeof ProtectedCustomerPlaygroundCustomerIdRoute
   '/_protected/customers/$customerId': typeof ProtectedCustomersCustomerIdRoute
+  '/_protected/customer-playground/': typeof ProtectedCustomerPlaygroundIndexRoute
   '/_protected/customers/': typeof ProtectedCustomersIndexRoute
   '/_protected/playground/': typeof ProtectedPlaygroundIndexRoute
   '/_protected/customers/new/': typeof ProtectedCustomersNewIndexRoute
@@ -109,7 +129,9 @@ export interface FileRouteTypes {
     | '/signin'
     | '/401'
     | '/auth/callback'
+    | '/customer-playground/$customerId'
     | '/customers/$customerId'
+    | '/customer-playground'
     | '/customers'
     | '/playground'
     | '/customers/new'
@@ -120,7 +142,9 @@ export interface FileRouteTypes {
     | '/signin'
     | '/401'
     | '/auth/callback'
+    | '/customer-playground/$customerId'
     | '/customers/$customerId'
+    | '/customer-playground'
     | '/customers'
     | '/playground'
     | '/customers/new'
@@ -131,7 +155,9 @@ export interface FileRouteTypes {
     | '/signin'
     | '/_protected/401'
     | '/auth/callback'
+    | '/_protected/customer-playground/$customerId'
     | '/_protected/customers/$customerId'
+    | '/_protected/customer-playground/'
     | '/_protected/customers/'
     | '/_protected/playground/'
     | '/_protected/customers/new/'
@@ -195,11 +221,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedCustomersIndexRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/customer-playground/': {
+      id: '/_protected/customer-playground/'
+      path: '/customer-playground'
+      fullPath: '/customer-playground'
+      preLoaderRoute: typeof ProtectedCustomerPlaygroundIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/_protected/customers/$customerId': {
       id: '/_protected/customers/$customerId'
       path: '/customers/$customerId'
       fullPath: '/customers/$customerId'
       preLoaderRoute: typeof ProtectedCustomersCustomerIdRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/customer-playground/$customerId': {
+      id: '/_protected/customer-playground/$customerId'
+      path: '/customer-playground/$customerId'
+      fullPath: '/customer-playground/$customerId'
+      preLoaderRoute: typeof ProtectedCustomerPlaygroundCustomerIdRouteImport
       parentRoute: typeof ProtectedRoute
     }
     '/_protected/customers/new/': {
@@ -214,7 +254,9 @@ declare module '@tanstack/react-router' {
 
 interface ProtectedRouteChildren {
   Protected401Route: typeof Protected401Route
+  ProtectedCustomerPlaygroundCustomerIdRoute: typeof ProtectedCustomerPlaygroundCustomerIdRoute
   ProtectedCustomersCustomerIdRoute: typeof ProtectedCustomersCustomerIdRoute
+  ProtectedCustomerPlaygroundIndexRoute: typeof ProtectedCustomerPlaygroundIndexRoute
   ProtectedCustomersIndexRoute: typeof ProtectedCustomersIndexRoute
   ProtectedPlaygroundIndexRoute: typeof ProtectedPlaygroundIndexRoute
   ProtectedCustomersNewIndexRoute: typeof ProtectedCustomersNewIndexRoute
@@ -222,7 +264,10 @@ interface ProtectedRouteChildren {
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
   Protected401Route: Protected401Route,
+  ProtectedCustomerPlaygroundCustomerIdRoute:
+    ProtectedCustomerPlaygroundCustomerIdRoute,
   ProtectedCustomersCustomerIdRoute: ProtectedCustomersCustomerIdRoute,
+  ProtectedCustomerPlaygroundIndexRoute: ProtectedCustomerPlaygroundIndexRoute,
   ProtectedCustomersIndexRoute: ProtectedCustomersIndexRoute,
   ProtectedPlaygroundIndexRoute: ProtectedPlaygroundIndexRoute,
   ProtectedCustomersNewIndexRoute: ProtectedCustomersNewIndexRoute,

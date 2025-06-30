@@ -5,8 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import CustomerContactSection from "./CustomerContactSection";
 import { Button } from "@/components/ui/button";
-import useUpdateCustomer from "../../hooks/useUpdateCustomer";
 import { Loader } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { updateCustomer } from "../../domain/command/updateCustomer";
+import queryClient from "@/configs/queryClient";
 
 interface CustomerContactFormProps {
   customer?: {
@@ -18,13 +20,25 @@ interface CustomerContactFormProps {
     phone: string;
   };
   onCompleted?: () => void;
+  featureFlag?: string;
 }
 
 const CustomerContactForm: React.FC<CustomerContactFormProps> = ({
   customer,
   onCompleted,
+  featureFlag = "old",
 }) => {
-  const { mutate, isPending } = useUpdateCustomer();
+  const { mutate, isPending } = useMutation({
+    meta: {
+      successMessage: "Customer contact updated successfully",
+    },
+    mutationFn: updateCustomer,
+    onSuccess: (_data, _variables) => {
+      return queryClient.invalidateQueries({
+        queryKey: featureFlag === "old" ? ["xxx-customers"] : ["customers"],
+      });
+    },
+  });
 
   const form = useForm<CustomerContactValue>({
     defaultValues: customer

@@ -11,7 +11,7 @@ export default function useUpdateCustomer() {
     mutationFn: updateCustomer,
     onSuccess: (_data, _variables) => {
       return queryClient.invalidateQueries({
-        queryKey: customerQueries.all,
+        queryKey: ["xxx-customers"],
       });
     },
   });

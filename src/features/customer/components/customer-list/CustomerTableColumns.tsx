@@ -10,6 +10,9 @@ const customerTableColumns: ColumnDef<Customer>[] = [
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => {
+      if (row.original.displayName === "Ivy Brown") {
+        console.log("render: Ivy Brown");
+      }
       return (
         <span className="font-medium">
           <Link
