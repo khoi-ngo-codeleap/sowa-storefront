@@ -1,5 +1,5 @@
 import { useParams, useRouter } from "@tanstack/react-router";
-import { customerCollectionAtom } from "@/features/customer-playground/domain/state";
+import useAtomValueOptional from "@/features/customer-playground/jotai-approach/domain/state";
 import { useMemo } from "react";
 import jotaiStore from "@/configs/jotai";
 import { Button } from "@/components/ui/button";
@@ -12,18 +12,22 @@ import {
 const CustomerPlaygroundDetail = () => {
   const router = useRouter();
   const customerId = useParams({
-    from: "/_protected/customer-playground/$customerId",
+    from: "/_protected/customer-playground/jotai/$customerId",
     select: (params) => params.customerId,
   });
 
   const { data: customersAtom, isPending } = useCustomersQuery(
     customerQueryVariable
   );
+  const customerAtoms = useAtomValueOptional(customersAtom);
 
   const customer = useMemo(() => {
-    const customerAtom = jotaiStore.get(customerCollectionAtom)[customerId];
+    if (!customerAtoms) return null;
+    const customerAtom = customerAtoms
+      ? customerAtoms.find((at) => jotaiStore.get(at)?.id === customerId)
+      : null;
     return customerAtom ? jotaiStore.get(customerAtom) : null;
-  }, [customersAtom]);
+  }, [customerAtoms, customerId]);
 
   return (
     <div>

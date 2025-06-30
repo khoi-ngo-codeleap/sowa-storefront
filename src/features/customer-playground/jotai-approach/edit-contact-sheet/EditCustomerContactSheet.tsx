@@ -24,12 +24,14 @@ const EditCustomerContactSheet = () => {
   const { isOpen, close, onChange } = useModal("editContact");
   const draftCustomer = useModalState("editContact");
 
+  console.log("draftCustomer ", draftCustomer);
+
   const { mutate, isPending } = useMutation({
     meta: {
       successMessage: "Customer contact updated successfully",
     },
     mutationFn: updateCustomer,
-    onSuccess: (_data, _variables) => {
+    onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: ["xxx-customers"],
       });

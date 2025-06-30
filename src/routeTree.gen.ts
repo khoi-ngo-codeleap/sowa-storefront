@@ -18,8 +18,9 @@ import { Route as ProtectedPlaygroundIndexRouteImport } from './routes/_protecte
 import { Route as ProtectedCustomersIndexRouteImport } from './routes/_protected/customers/index'
 import { Route as ProtectedCustomerPlaygroundIndexRouteImport } from './routes/_protected/customer-playground/index'
 import { Route as ProtectedCustomersCustomerIdRouteImport } from './routes/_protected/customers/$customerId'
-import { Route as ProtectedCustomerPlaygroundCustomerIdRouteImport } from './routes/_protected/customer-playground/$customerId'
 import { Route as ProtectedCustomersNewIndexRouteImport } from './routes/_protected/customers/new/index'
+import { Route as ProtectedCustomerPlaygroundTanstackCustomerIdRouteImport } from './routes/_protected/customer-playground/tanstack/$customerId'
+import { Route as ProtectedCustomerPlaygroundJotaiCustomerIdRouteImport } from './routes/_protected/customer-playground/jotai/$customerId'
 
 const SigninRoute = SigninRouteImport.update({
   id: '/signin',
@@ -68,16 +69,22 @@ const ProtectedCustomersCustomerIdRoute =
     path: '/customers/$customerId',
     getParentRoute: () => ProtectedRoute,
   } as any)
-const ProtectedCustomerPlaygroundCustomerIdRoute =
-  ProtectedCustomerPlaygroundCustomerIdRouteImport.update({
-    id: '/customer-playground/$customerId',
-    path: '/customer-playground/$customerId',
-    getParentRoute: () => ProtectedRoute,
-  } as any)
 const ProtectedCustomersNewIndexRoute =
   ProtectedCustomersNewIndexRouteImport.update({
     id: '/customers/new/',
     path: '/customers/new/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedCustomerPlaygroundTanstackCustomerIdRoute =
+  ProtectedCustomerPlaygroundTanstackCustomerIdRouteImport.update({
+    id: '/customer-playground/tanstack/$customerId',
+    path: '/customer-playground/tanstack/$customerId',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedCustomerPlaygroundJotaiCustomerIdRoute =
+  ProtectedCustomerPlaygroundJotaiCustomerIdRouteImport.update({
+    id: '/customer-playground/jotai/$customerId',
+    path: '/customer-playground/jotai/$customerId',
     getParentRoute: () => ProtectedRoute,
   } as any)
 
@@ -87,11 +94,12 @@ export interface FileRoutesByFullPath {
   '/signin': typeof SigninRoute
   '/401': typeof Protected401Route
   '/auth/callback': typeof AuthCallbackRoute
-  '/customer-playground/$customerId': typeof ProtectedCustomerPlaygroundCustomerIdRoute
   '/customers/$customerId': typeof ProtectedCustomersCustomerIdRoute
   '/customer-playground': typeof ProtectedCustomerPlaygroundIndexRoute
   '/customers': typeof ProtectedCustomersIndexRoute
   '/playground': typeof ProtectedPlaygroundIndexRoute
+  '/customer-playground/jotai/$customerId': typeof ProtectedCustomerPlaygroundJotaiCustomerIdRoute
+  '/customer-playground/tanstack/$customerId': typeof ProtectedCustomerPlaygroundTanstackCustomerIdRoute
   '/customers/new': typeof ProtectedCustomersNewIndexRoute
 }
 export interface FileRoutesByTo {
@@ -100,11 +108,12 @@ export interface FileRoutesByTo {
   '/signin': typeof SigninRoute
   '/401': typeof Protected401Route
   '/auth/callback': typeof AuthCallbackRoute
-  '/customer-playground/$customerId': typeof ProtectedCustomerPlaygroundCustomerIdRoute
   '/customers/$customerId': typeof ProtectedCustomersCustomerIdRoute
   '/customer-playground': typeof ProtectedCustomerPlaygroundIndexRoute
   '/customers': typeof ProtectedCustomersIndexRoute
   '/playground': typeof ProtectedPlaygroundIndexRoute
+  '/customer-playground/jotai/$customerId': typeof ProtectedCustomerPlaygroundJotaiCustomerIdRoute
+  '/customer-playground/tanstack/$customerId': typeof ProtectedCustomerPlaygroundTanstackCustomerIdRoute
   '/customers/new': typeof ProtectedCustomersNewIndexRoute
 }
 export interface FileRoutesById {
@@ -114,11 +123,12 @@ export interface FileRoutesById {
   '/signin': typeof SigninRoute
   '/_protected/401': typeof Protected401Route
   '/auth/callback': typeof AuthCallbackRoute
-  '/_protected/customer-playground/$customerId': typeof ProtectedCustomerPlaygroundCustomerIdRoute
   '/_protected/customers/$customerId': typeof ProtectedCustomersCustomerIdRoute
   '/_protected/customer-playground/': typeof ProtectedCustomerPlaygroundIndexRoute
   '/_protected/customers/': typeof ProtectedCustomersIndexRoute
   '/_protected/playground/': typeof ProtectedPlaygroundIndexRoute
+  '/_protected/customer-playground/jotai/$customerId': typeof ProtectedCustomerPlaygroundJotaiCustomerIdRoute
+  '/_protected/customer-playground/tanstack/$customerId': typeof ProtectedCustomerPlaygroundTanstackCustomerIdRoute
   '/_protected/customers/new/': typeof ProtectedCustomersNewIndexRoute
 }
 export interface FileRouteTypes {
@@ -129,11 +139,12 @@ export interface FileRouteTypes {
     | '/signin'
     | '/401'
     | '/auth/callback'
-    | '/customer-playground/$customerId'
     | '/customers/$customerId'
     | '/customer-playground'
     | '/customers'
     | '/playground'
+    | '/customer-playground/jotai/$customerId'
+    | '/customer-playground/tanstack/$customerId'
     | '/customers/new'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -142,11 +153,12 @@ export interface FileRouteTypes {
     | '/signin'
     | '/401'
     | '/auth/callback'
-    | '/customer-playground/$customerId'
     | '/customers/$customerId'
     | '/customer-playground'
     | '/customers'
     | '/playground'
+    | '/customer-playground/jotai/$customerId'
+    | '/customer-playground/tanstack/$customerId'
     | '/customers/new'
   id:
     | '__root__'
@@ -155,11 +167,12 @@ export interface FileRouteTypes {
     | '/signin'
     | '/_protected/401'
     | '/auth/callback'
-    | '/_protected/customer-playground/$customerId'
     | '/_protected/customers/$customerId'
     | '/_protected/customer-playground/'
     | '/_protected/customers/'
     | '/_protected/playground/'
+    | '/_protected/customer-playground/jotai/$customerId'
+    | '/_protected/customer-playground/tanstack/$customerId'
     | '/_protected/customers/new/'
   fileRoutesById: FileRoutesById
 }
@@ -235,13 +248,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedCustomersCustomerIdRouteImport
       parentRoute: typeof ProtectedRoute
     }
-    '/_protected/customer-playground/$customerId': {
-      id: '/_protected/customer-playground/$customerId'
-      path: '/customer-playground/$customerId'
-      fullPath: '/customer-playground/$customerId'
-      preLoaderRoute: typeof ProtectedCustomerPlaygroundCustomerIdRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
     '/_protected/customers/new/': {
       id: '/_protected/customers/new/'
       path: '/customers/new'
@@ -249,27 +255,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedCustomersNewIndexRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/customer-playground/tanstack/$customerId': {
+      id: '/_protected/customer-playground/tanstack/$customerId'
+      path: '/customer-playground/tanstack/$customerId'
+      fullPath: '/customer-playground/tanstack/$customerId'
+      preLoaderRoute: typeof ProtectedCustomerPlaygroundTanstackCustomerIdRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/customer-playground/jotai/$customerId': {
+      id: '/_protected/customer-playground/jotai/$customerId'
+      path: '/customer-playground/jotai/$customerId'
+      fullPath: '/customer-playground/jotai/$customerId'
+      preLoaderRoute: typeof ProtectedCustomerPlaygroundJotaiCustomerIdRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
   }
 }
 
 interface ProtectedRouteChildren {
   Protected401Route: typeof Protected401Route
-  ProtectedCustomerPlaygroundCustomerIdRoute: typeof ProtectedCustomerPlaygroundCustomerIdRoute
   ProtectedCustomersCustomerIdRoute: typeof ProtectedCustomersCustomerIdRoute
   ProtectedCustomerPlaygroundIndexRoute: typeof ProtectedCustomerPlaygroundIndexRoute
   ProtectedCustomersIndexRoute: typeof ProtectedCustomersIndexRoute
   ProtectedPlaygroundIndexRoute: typeof ProtectedPlaygroundIndexRoute
+  ProtectedCustomerPlaygroundJotaiCustomerIdRoute: typeof ProtectedCustomerPlaygroundJotaiCustomerIdRoute
+  ProtectedCustomerPlaygroundTanstackCustomerIdRoute: typeof ProtectedCustomerPlaygroundTanstackCustomerIdRoute
   ProtectedCustomersNewIndexRoute: typeof ProtectedCustomersNewIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
   Protected401Route: Protected401Route,
-  ProtectedCustomerPlaygroundCustomerIdRoute:
-    ProtectedCustomerPlaygroundCustomerIdRoute,
   ProtectedCustomersCustomerIdRoute: ProtectedCustomersCustomerIdRoute,
   ProtectedCustomerPlaygroundIndexRoute: ProtectedCustomerPlaygroundIndexRoute,
   ProtectedCustomersIndexRoute: ProtectedCustomersIndexRoute,
   ProtectedPlaygroundIndexRoute: ProtectedPlaygroundIndexRoute,
+  ProtectedCustomerPlaygroundJotaiCustomerIdRoute:
+    ProtectedCustomerPlaygroundJotaiCustomerIdRoute,
+  ProtectedCustomerPlaygroundTanstackCustomerIdRoute:
+    ProtectedCustomerPlaygroundTanstackCustomerIdRoute,
   ProtectedCustomersNewIndexRoute: ProtectedCustomersNewIndexRoute,
 }
 
