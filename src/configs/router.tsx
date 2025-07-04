@@ -7,12 +7,19 @@ declare module "@tanstack/react-router" {
   interface Register {
     router: typeof router;
   }
+
+  interface StaticDataRouteOption {
+    page?: {
+      title: string;
+      description: string;
+    };
+  }
 }
 
 // Create a new router instance
 const router = createRouter({
   routeTree,
-  // defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
+  defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
   defaultNotFoundComponent: () => <NotFoundComponent />,
   defaultPreload: "intent",
   scrollRestoration: true,
