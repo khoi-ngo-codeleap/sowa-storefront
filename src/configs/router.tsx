@@ -28,4 +28,10 @@ const router = createRouter({
   },
 });
 
+// router.subscribe(
+//   "onBeforeLoad",
+//   ({ pathChanged }) => pathChanged && nprogress.start()
+// );
+// router.subscribe("onLoad", () => nprogress.done());
+
 export default router;

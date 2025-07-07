@@ -1,6 +1,12 @@
 import { FC, PropsWithChildren, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { HeadContent, isMatch, useMatches } from "@tanstack/react-router";
+import {
+  HeadContent,
+  isMatch,
+  Link,
+  useMatches,
+  useRouterState,
+} from "@tanstack/react-router";
 
 const ChildComponent = () => {
   const [count, setCount] = useState(0);
@@ -54,8 +60,12 @@ const PageHeader = () => {
 };
 
 const PlayGroundIndex = () => {
+  const state = useRouterState();
   return (
     <>
+      <Link to="/customers" viewTransition={{ types: ["slide-left"] }}>
+        Playground
+      </Link>
       <PageHeader />
       <HeadContent />
       <ParentComponent>
