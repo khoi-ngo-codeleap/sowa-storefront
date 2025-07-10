@@ -7,7 +7,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
-import dayjs, { SupportedFormats } from "@/lib/dayjs";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Tooltip,
@@ -15,14 +14,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { CustomerEvent } from "@/features/customer/domain/types/event";
-
-function FormattedTime({ time }: { time: string }) {
-  return (
-    <span className="min-w-fit">
-      {dayjs(time).local().format(SupportedFormats.TIME_SHORT)}
-    </span>
-  );
-}
+import FormattedTime from "@/components/FormattedTime";
 
 export function CustomerCreateTimelineEvent(
   event: Extract<CustomerEvent, { type: "create" }>

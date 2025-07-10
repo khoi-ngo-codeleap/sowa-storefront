@@ -5,28 +5,28 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useModal, useModalState } from "../../state/modal";
-import CustomerContactForm from "../form/CustomerContactForm";
+import { usePostModal, usePostModalState } from "../states/modal";
+import PostForm from "./PostForm";
 
-const EditCustomerContactSheet = () => {
-  const { isOpen, close, onChange } = useModal("editContact");
-  const draftCustomer = useModalState("editContact");
+const EditPostSheet = () => {
+  const { isOpen, close, onChange } = usePostModal("edit");
+  const draftPost = usePostModalState("edit");
 
   return (
     <Sheet open={isOpen} onOpenChange={onChange}>
       <SheetContent className="w-[480px] overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>Edit customer</SheetTitle>
+          <SheetTitle>Edit post</SheetTitle>
           <SheetDescription>
             Edit customer name, email, phone number, and default address.
           </SheetDescription>
         </SheetHeader>
         <div className="p-4">
-          <CustomerContactForm customer={draftCustomer} onCompleted={close} />
+          <PostForm post={draftPost} onCompleted={close} />
         </div>
       </SheetContent>
     </Sheet>
   );
 };
 
-export default EditCustomerContactSheet;
+export default EditPostSheet;

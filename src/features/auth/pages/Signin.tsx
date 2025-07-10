@@ -17,9 +17,10 @@ const Signin = () => {
   useEffect(() => {
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
       console.info("auth state change:: hasSession", !!session);
       if (session) {
+        await supabase.realtime.setAuth();
         navigate({ to: redirect ?? "/" });
       }
     });

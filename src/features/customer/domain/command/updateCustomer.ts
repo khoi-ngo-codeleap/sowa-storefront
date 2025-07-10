@@ -10,12 +10,29 @@ export const updateCustomer = async ({
   id,
   updateSet,
 }: UpdateCustomerVariable) => {
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from("customer")
     .update(updateSet)
     .eq("id", id)
-    .select();
+    .select(
+      `
+      id,
+      firstName:first_name,
+      lastName:last_name,
+      state,
+      phone,
+      email,
+      locale,
+      displayName:display_name,
+      address:customer_address(
+        id,
+        formattedArea:formatted_area,
+        country
+      ),
+      orderAggregate:customer_order(id.count(), price.sum())`
+    )
+    .single()
+    .throwOnError();
 
-  if (error) throw error;
   return data;
 };

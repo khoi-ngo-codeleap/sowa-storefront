@@ -61,6 +61,10 @@ const data = {
           url: "/customers",
         },
         {
+          title: "Posts",
+          url: "/posts",
+        },
+        {
           title: "Playground",
           url: "/playground",
         },

@@ -14,6 +14,7 @@ import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
 import { Route as Protected401RouteImport } from './routes/_protected/401'
+import { Route as ProtectedPostsIndexRouteImport } from './routes/_protected/posts/index'
 import { Route as ProtectedPlaygroundIndexRouteImport } from './routes/_protected/playground/index'
 import { Route as ProtectedCustomersIndexRouteImport } from './routes/_protected/customers/index'
 import { Route as ProtectedCustomersCustomerIdRouteImport } from './routes/_protected/customers/$customerId'
@@ -41,6 +42,11 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
 const Protected401Route = Protected401RouteImport.update({
   id: '/401',
   path: '/401',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedPostsIndexRoute = ProtectedPostsIndexRouteImport.update({
+  id: '/posts/',
+  path: '/posts/',
   getParentRoute: () => ProtectedRoute,
 } as any)
 const ProtectedPlaygroundIndexRoute =
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/customers/$customerId': typeof ProtectedCustomersCustomerIdRoute
   '/customers': typeof ProtectedCustomersIndexRoute
   '/playground': typeof ProtectedPlaygroundIndexRoute
+  '/posts': typeof ProtectedPostsIndexRoute
   '/customers/new': typeof ProtectedCustomersNewIndexRoute
 }
 export interface FileRoutesByTo {
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/customers/$customerId': typeof ProtectedCustomersCustomerIdRoute
   '/customers': typeof ProtectedCustomersIndexRoute
   '/playground': typeof ProtectedPlaygroundIndexRoute
+  '/posts': typeof ProtectedPostsIndexRoute
   '/customers/new': typeof ProtectedCustomersNewIndexRoute
 }
 export interface FileRoutesById {
@@ -99,6 +107,7 @@ export interface FileRoutesById {
   '/_protected/customers/$customerId': typeof ProtectedCustomersCustomerIdRoute
   '/_protected/customers/': typeof ProtectedCustomersIndexRoute
   '/_protected/playground/': typeof ProtectedPlaygroundIndexRoute
+  '/_protected/posts/': typeof ProtectedPostsIndexRoute
   '/_protected/customers/new/': typeof ProtectedCustomersNewIndexRoute
 }
 export interface FileRouteTypes {
@@ -112,6 +121,7 @@ export interface FileRouteTypes {
     | '/customers/$customerId'
     | '/customers'
     | '/playground'
+    | '/posts'
     | '/customers/new'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -123,6 +133,7 @@ export interface FileRouteTypes {
     | '/customers/$customerId'
     | '/customers'
     | '/playground'
+    | '/posts'
     | '/customers/new'
   id:
     | '__root__'
@@ -134,6 +145,7 @@ export interface FileRouteTypes {
     | '/_protected/customers/$customerId'
     | '/_protected/customers/'
     | '/_protected/playground/'
+    | '/_protected/posts/'
     | '/_protected/customers/new/'
   fileRoutesById: FileRoutesById
 }
@@ -181,6 +193,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Protected401RouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/posts/': {
+      id: '/_protected/posts/'
+      path: '/posts'
+      fullPath: '/posts'
+      preLoaderRoute: typeof ProtectedPostsIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/_protected/playground/': {
       id: '/_protected/playground/'
       path: '/playground'
@@ -217,6 +236,7 @@ interface ProtectedRouteChildren {
   ProtectedCustomersCustomerIdRoute: typeof ProtectedCustomersCustomerIdRoute
   ProtectedCustomersIndexRoute: typeof ProtectedCustomersIndexRoute
   ProtectedPlaygroundIndexRoute: typeof ProtectedPlaygroundIndexRoute
+  ProtectedPostsIndexRoute: typeof ProtectedPostsIndexRoute
   ProtectedCustomersNewIndexRoute: typeof ProtectedCustomersNewIndexRoute
 }
 
@@ -225,6 +245,7 @@ const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedCustomersCustomerIdRoute: ProtectedCustomersCustomerIdRoute,
   ProtectedCustomersIndexRoute: ProtectedCustomersIndexRoute,
   ProtectedPlaygroundIndexRoute: ProtectedPlaygroundIndexRoute,
+  ProtectedPostsIndexRoute: ProtectedPostsIndexRoute,
   ProtectedCustomersNewIndexRoute: ProtectedCustomersNewIndexRoute,
 }
 

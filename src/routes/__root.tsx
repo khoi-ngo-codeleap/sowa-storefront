@@ -1,7 +1,6 @@
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { DevTools } from "jotai-devtools";
 import "jotai-devtools/styles.css";
 import supabase from "@/api/client/supabase";
 import { User } from "@supabase/supabase-js";
@@ -19,13 +18,6 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   component: () => (
     <AuthProvider>
       <Outlet />
-      <DevTools
-        position="top-left"
-        options={{
-          shouldShowPrivateAtoms: true,
-          shouldExpandJsonTreeViewInitially: true,
-        }}
-      />
       <TanStackRouterDevtools />
       <ReactQueryDevtools />
     </AuthProvider>

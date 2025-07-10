@@ -1,6 +1,5 @@
 import { useAuth } from "@/auth";
 import { AppSidebar } from "@/components/AppSidebar";
-import Progress from "@/components/Progress";
 import { Button } from "@/components/ui/button";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
@@ -10,7 +9,7 @@ import {
   redirect,
   useRouterState,
 } from "@tanstack/react-router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const Route = createFileRoute("/_protected")({
   component: LayoutComponent,
@@ -136,9 +135,9 @@ function LayoutComponent() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
-        <Nav avatar={<Avatar />} progress={<Progress />} />
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0 ">
+      <SidebarInset className="relative h-svh">
+        <Nav avatar={<Avatar />} />
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0 overflow-auto">
           <Outlet />
         </div>
       </SidebarInset>

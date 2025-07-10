@@ -15,3 +15,4 @@ export interface PaginationState {
   total?: number;
 }
 
+export type ListItem<T> = T extends Array<infer U> ? U : never;

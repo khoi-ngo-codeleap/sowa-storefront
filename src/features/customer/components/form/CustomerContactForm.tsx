@@ -24,7 +24,7 @@ const CustomerContactForm: React.FC<CustomerContactFormProps> = ({
   customer,
   onCompleted,
 }) => {
-  const { mutate, isPending } = useUpdateCustomer();
+  const { mutate: updateCustomer, isPending } = useUpdateCustomer();
 
   const form = useForm<CustomerContactValue>({
     defaultValues: customer
@@ -41,8 +41,7 @@ const CustomerContactForm: React.FC<CustomerContactFormProps> = ({
 
   const onSubmit: SubmitHandler<CustomerContactValue> = (values) => {
     if (customer) {
-      console.log(values);
-      mutate(
+      updateCustomer(
         {
           id: customer.id,
           updateSet: {
