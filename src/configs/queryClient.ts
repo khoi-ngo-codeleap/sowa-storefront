@@ -57,20 +57,22 @@ function handleGlobalToast({
   return customMessage;
 }
 
-const queryClient = new QueryClient({
-  queryCache: new QueryCache({
-    onError: (error, query) => {
-      Sentry.captureException(error);
-      const toastMessage = handleGlobalToast({
-        error,
-        message: query.meta?.errorMessage,
-        showErrorToast: query.meta?.showErrorToast,
-        defaultToast: false, // ✅ Don't show toast unless explicitly opted-in
-      });
+export const queryCache = new QueryCache({
+  onError: (error, query) => {
+    Sentry.captureException(error);
+    const toastMessage = handleGlobalToast({
+      error,
+      message: query.meta?.errorMessage,
+      showErrorToast: query.meta?.showErrorToast,
+      defaultToast: false, // ✅ Don't show toast unless explicitly opted-in
+    });
 
-      if (toastMessage) toast(toastMessage);
-    },
-  }),
+    if (toastMessage) toast(toastMessage);
+  },
+});
+
+const queryClient = new QueryClient({
+  queryCache,
   mutationCache: new MutationCache({
     onSuccess: (_data, _variables, _context, mutation) => {
       const message = mutation.meta?.successMessage;

@@ -5,6 +5,12 @@ interface GetCustomerByIdVariable {
   id: string;
 }
 
+/**
+ * Get a customer by ID.
+ * @param {GetCustomerByIdVariable} variables
+ * @returns {Promise<CustomerDetail>} The customer with the given ID.
+ */
+
 export const getCustomerById = async ({
   id,
 }: GetCustomerByIdVariable): Promise<CustomerDetail> => {

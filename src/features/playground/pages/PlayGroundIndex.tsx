@@ -1,12 +1,12 @@
-import { FC, PropsWithChildren, useEffect, useRef, useState } from "react";
+import { FC, PropsWithChildren, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  HeadContent,
-  isMatch,
-  Link,
-  useMatches,
-  useRouterState,
-} from "@tanstack/react-router";
+import { HeadContent, isMatch, Link, useMatches } from "@tanstack/react-router";
+import useRenderCount from "@/hooks/use-render-count";
+import UploadingCard from "@/components/upload/components/UploadingCard";
+import UploadSuccessCard from "@/components/upload/components/UploadSuccessCard";
+import UploadErrorCard from "@/components/upload/components/UploadErrorCard";
+import UploadArea from "@/components/upload/components/UploadArea";
+import { Upload } from "@/components/upload/Upload";
 
 const ChildComponent = () => {
   const [count, setCount] = useState(0);
@@ -21,24 +21,13 @@ const ChildComponent = () => {
 };
 
 const ParentComponent: FC<PropsWithChildren> = ({ children }) => {
-  const count = useCount();
+  const count = useRenderCount();
   return (
     <div className="border p-4 space-y-1">
       <div className="text-xl text-orange-500">ParentComponent: {count}</div>
       {children}
     </div>
   );
-};
-
-const useCount = () => {
-  const countRef = useRef(0);
-  const [mount, setMount] = useState(false);
-
-  useEffect(() => {
-    setMount(true);
-  }, []);
-  countRef.current = mount ? countRef.current + 1 : 0;
-  return countRef.current;
 };
 
 const PageHeader = () => {
@@ -60,19 +49,7 @@ const PageHeader = () => {
 };
 
 const PlayGroundIndex = () => {
-  const state = useRouterState();
-  return (
-    <>
-      <Link to="/customers" viewTransition={{ types: ["slide-left"] }}>
-        Playground
-      </Link>
-      <PageHeader />
-      <HeadContent />
-      <ParentComponent>
-        <ChildComponent />
-      </ParentComponent>
-    </>
-  );
+  return <div className="max-w-[400px] flex flex-col gap-4"></div>;
 };
 
 export default PlayGroundIndex;

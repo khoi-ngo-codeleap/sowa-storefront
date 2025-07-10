@@ -2,25 +2,24 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 
-export function ProgressBar() {
+export default function Progress() {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  const runningRef = useRef<boolean>(false);
   const rafRef = useRef<number>(0);
   const startTimeRef = useRef<number>(0);
   const minVisibleTime = 300; // ms
 
-  const easingProgress = (t: number) =>
-    // simple ease-out for width increase
-    0.5 + 0.5 * Math.sin((Math.PI * t) / 2);
+  // simple ease-out for width increase
+  const easingProgress = (t: number) => 0.5 + 0.5 * Math.sin((Math.PI * t) / 2);
 
   useEffect(() => {
-    let isRunning = true;
-    let lastFrame = performance.now();
+    console.log("Effect running for progress bar");
 
     function animateProgress(timestamp: number) {
-      if (!isRunning) return;
+      if (!runningRef.current) return;
 
       const elapsed = timestamp - startTimeRef.current;
       const t = Math.min(elapsed / 2000, 1); // Progress bar runs ~2s max
@@ -38,7 +37,7 @@ export function ProgressBar() {
       // Begin animation on next tick
       rafRef.current = requestAnimationFrame(animateProgress);
     } else {
-      isRunning = false;
+      runningRef.current = false;
       cancelAnimationFrame(rafRef.current!);
 
       // Fill to 100%, then fade out after a delay
@@ -52,22 +51,26 @@ export function ProgressBar() {
     }
 
     return () => {
-      isRunning = false;
-      cancelAnimationFrame(rafRef.current!);
+      runningRef.current = false;
+      rafRef.current && cancelAnimationFrame(rafRef.current);
     };
   }, [router.state.status]);
 
   return (
     <div
       className={cn(
-        "pointer-events-none fixed top-0 left-0 right-0 z-50 h-1 overflow-hidden transition-opacity duration-300"
-        // visible ? "opacity-100" : "opacity-0"
+        "w-full h-1 bg-gray-200 fixed top-0 left-0 z-50"
+        // visible ? "opacity-100 animate-pulse" : "opacity-0"
       )}
     >
       <div
-        className="h-full bg-primary transition-all duration-300 ease-out"
-        // style={{ width: `${progress}%` }}
-        // style={{ width: `20%` }}
+        className="h-full bg-amber-500 transition-all"
+        style={{
+          width: `${progress}%`,
+        }}
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
       />
     </div>
   );
