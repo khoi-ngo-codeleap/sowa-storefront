@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:mini-app": "vite --config mini-app/vite.config.ts",
     "extract": "formatjs extract",
     "verify": "formatjs verify --missing-keys",
     "compile": "formatjs compile",
@@ -15,6 +16,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
+    "@jtl-software/cloud-apps-core": "file:/Users/jinseimelody/jtl-platform-plugin-service/src/sdk/js-core/jtl-software-cloud-apps-core-v0.0.0.tgz",
+    "@jtl/cloud-apps-internal-react": "file:/Users/jinseimelody/jtl-platform-plugin-service/src/sdk/js-internal-react/jtl-cloud-apps-internal-react-v0.0.0.tgz",
+    "@jtl/platform-internal-react": "^0.39.0",
     "@ory/cli": "^1.1.0",
     "@ory/client": "^1.16.6",
     "@radix-ui/react-avatar": "^1.1.10",

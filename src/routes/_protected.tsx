@@ -123,7 +123,7 @@ function Nav({
   progress?: React.ReactNode;
 }) {
   return (
-    <div className="relative border px-4 py-2 flex items-center justify-between">
+    <div className="relative px-4 py-2 flex items-center justify-between">
       <div>{menu}</div>
       <div>{avatar}</div>
       {progress}
@@ -137,6 +137,7 @@ function LayoutComponent() {
       <AppSidebar />
       <SidebarInset className="relative h-svh">
         <Nav avatar={<Avatar />} />
+        <hr />
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0 overflow-auto">
           <Outlet />
         </div>
