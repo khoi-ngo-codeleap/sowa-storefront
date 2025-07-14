@@ -10,7 +10,7 @@ export default function UploadArea(props: DropzoneRootProps) {
         "w-[500px] max-w-full flex flex-col items-center gap-6 p-6",
         "bg-background border border-dashed  rounded-lg",
         "transition-all transform duration-200",
-        "hover:cursor-pointer"
+        "hover:cursor-pointer",
         // isDragActive && "bg-[var(--base-info-background)]",
         // errorMessage && "border-[var(--base-danger-border)]"
       )}
@@ -19,7 +19,7 @@ export default function UploadArea(props: DropzoneRootProps) {
       <div
         className={cn(
           "size-12 flex items-center justify-center p-2",
-          "border rounded-md bg-card shadow-sm"
+          "border rounded-md bg-card shadow-sm",
         )}
       >
         <Upload size={24} />
@@ -30,7 +30,7 @@ export default function UploadArea(props: DropzoneRootProps) {
         </div>
         <div
           className={cn(
-            "text-center text-muted-foreground text-sm whitespace-pre"
+            "text-center text-muted-foreground text-sm whitespace-pre",
           )}
         >
           Pick a file up to <FormattedFileSize size={50000} />

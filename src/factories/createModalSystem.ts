@@ -34,7 +34,7 @@ export function createModalSystem<TModalMap extends Record<string, unknown>>() {
         setActiveModal(payload.type);
         setModalPayload(payload as ModalPayload<TModalMap>); // Cast needed as payload might be a specific subtype
       },
-      [setActiveModal, setModalPayload]
+      [setActiveModal, setModalPayload],
     );
 
     // This is useful for UI components that have an `onOpenChange` prop (e.g., Radix Dialog)
@@ -42,7 +42,7 @@ export function createModalSystem<TModalMap extends Record<string, unknown>>() {
       (openState: boolean) => {
         !openState && setActiveModal(null);
       },
-      [setActiveModal]
+      [setActiveModal],
     );
 
     return { isOpen, close, open, onChange };
@@ -55,7 +55,7 @@ export function createModalSystem<TModalMap extends Record<string, unknown>>() {
    * @returns The payload for the specified modal type, or `undefined` if the modal is not active or no payload is set.
    */
   function useModalState<T extends keyof TModalMap>(
-    modalType: T
+    modalType: T,
   ): TModalMap[T] | undefined {
     const modalPayload = useAtomValue(modalPayloadAtom);
 

@@ -36,7 +36,7 @@ const EditCustomerNoteForm: React.FC<EditCustomerNoteFormProps> = ({
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof customerNoteSchema>> = (
-    values
+    values,
   ) => {
     if (customer) {
       mutate(
@@ -44,7 +44,7 @@ const EditCustomerNoteForm: React.FC<EditCustomerNoteFormProps> = ({
           id: customer.id,
           updateSet: values,
         },
-        { onSuccess: onCompleted }
+        { onSuccess: onCompleted },
       );
     }
   };

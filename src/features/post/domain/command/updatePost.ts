@@ -12,7 +12,7 @@ export const updatePost = async ({ id, updateSet }: UpdatePostVariable) => {
     .update(updateSet)
     .eq("id", id)
     .select(
-      "id, title, content, createdAt:created_at, updatedAt:updated_at, isFeatured:is_featured"
+      "id, title, content, createdAt:created_at, updatedAt:updated_at, isFeatured:is_featured",
     )
     .single()
     .throwOnError();

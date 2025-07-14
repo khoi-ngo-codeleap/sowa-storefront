@@ -49,7 +49,7 @@ const CustomerContactForm: React.FC<CustomerContactFormProps> = ({
             ...values,
           },
         },
-        { onSuccess: onCompleted }
+        { onSuccess: onCompleted },
       );
     }
   };

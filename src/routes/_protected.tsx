@@ -102,7 +102,7 @@ function ProgressBar() {
       <div className={cn("absolute left-0 -bottom-1 h-1 w-full bg-secondary")}>
         <span
           className={cn(
-            "h-full w-full absolute bottom-0 left-0 bg-amber-600 transform-all"
+            "h-full w-full absolute bottom-0 left-0 bg-amber-600 transform-all",
           )}
           style={{
             width: `${progress}%`,

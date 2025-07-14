@@ -12,7 +12,7 @@ function FileIcon() {
   return (
     <div
       className={cn(
-        "size-9 shrink-0 flex items-center justify-center p-1 rounded-md bg-green-100 text-green-600"
+        "size-9 shrink-0 flex items-center justify-center p-1 rounded-md bg-green-100 text-green-600",
       )}
     >
       <File size={16} />

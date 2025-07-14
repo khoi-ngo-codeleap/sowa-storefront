@@ -42,7 +42,7 @@ export const getCustomerById = async ({
       formattedArea:formatted_area,
       country
     ),
-    orderAggregate:customer_order(id.count(), price.sum())`
+    orderAggregate:customer_order(id.count(), price.sum())`,
     )
     .eq("id", id)
     .single()

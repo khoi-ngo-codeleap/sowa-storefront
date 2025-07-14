@@ -21,7 +21,7 @@ export const getCustomerEvents = async ({
         email
       ),
       createdAt:created_at
-    `
+    `,
     )
     .eq("customer_id", id)
     .order("created_at", { ascending: false });

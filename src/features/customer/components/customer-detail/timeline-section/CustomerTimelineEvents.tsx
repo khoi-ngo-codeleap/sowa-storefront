@@ -17,7 +17,7 @@ import { CustomerEvent } from "@/features/customer/domain/types/event";
 import FormattedTime from "@/components/FormattedTime";
 
 export function CustomerCreateTimelineEvent(
-  event: Extract<CustomerEvent, { type: "create" }>
+  event: Extract<CustomerEvent, { type: "create" }>,
 ) {
   return (
     <TimelineItem>
@@ -32,7 +32,7 @@ export function CustomerCreateTimelineEvent(
 }
 
 export function CustomerCommentTimelineEvent(
-  event: Extract<CustomerEvent, { type: "comment" }>
+  event: Extract<CustomerEvent, { type: "comment" }>,
 ) {
   return (
     <TimelineItem>
@@ -65,7 +65,7 @@ export function CustomerCommentTimelineEvent(
 }
 
 export function CustomerCreateOrderTimelineEvent(
-  event: Extract<CustomerEvent, { type: "create_order" }>
+  event: Extract<CustomerEvent, { type: "create_order" }>,
 ) {
   return (
     <TimelineItem>
@@ -82,7 +82,7 @@ export function CustomerCreateOrderTimelineEvent(
 }
 
 export function CustomerEmailSentTimelineEvent(
-  event: Extract<CustomerEvent, { type: "email_sent_confirming_order" }>
+  event: Extract<CustomerEvent, { type: "email_sent_confirming_order" }>,
 ) {
   return (
     <TimelineItem>
@@ -102,7 +102,7 @@ export function CustomerEmailSentTimelineEvent(
 }
 
 export function CustomerUpdateNoteTimelineEvent(
-  event: Extract<CustomerEvent, { type: "update_note" }>
+  event: Extract<CustomerEvent, { type: "update_note" }>,
 ) {
   return (
     <TimelineItem collapsible>
@@ -130,7 +130,7 @@ export function CustomerUpdateNoteTimelineEvent(
 }
 
 export function CustomerUpdateTimelineEvent(
-  event: Extract<CustomerEvent, { type: "update" }>
+  event: Extract<CustomerEvent, { type: "update" }>,
 ) {
   return (
     <TimelineItem>
@@ -145,7 +145,7 @@ export function CustomerUpdateTimelineEvent(
 }
 
 export function CustomerCreditedTimelineEvent(
-  event: Extract<CustomerEvent, { type: "credited" }>
+  event: Extract<CustomerEvent, { type: "credited" }>,
 ) {
   return (
     <TimelineItem>

@@ -32,7 +32,7 @@ export const getCustomers = async ({
       orderAggregate:customer_order(id.count(), price.sum())`,
       {
         count: "exact",
-      }
+      },
     )
     .order("email", { ascending: false })
     .throwOnError();

@@ -1,4 +1,3 @@
-
 export interface Event<T extends string, Payload> {
   id: string;
   type: T;
@@ -15,4 +14,3 @@ export type UnionizeEvents<PayloadMap extends Record<string, any>> = {
     ? Event<Key, PayloadMap[Key]>
     : unknown;
 }[keyof PayloadMap];
-

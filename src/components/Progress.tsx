@@ -59,7 +59,7 @@ export default function Progress() {
   return (
     <div
       className={cn(
-        "w-full h-1 bg-gray-200 fixed top-0 left-0 z-50"
+        "w-full h-1 bg-gray-200 fixed top-0 left-0 z-50",
         // visible ? "opacity-100 animate-pulse" : "opacity-0"
       )}
     >

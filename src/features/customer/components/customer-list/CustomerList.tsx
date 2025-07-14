@@ -4,7 +4,7 @@ import customerTableColumns from "./CustomerTableColumns";
 import { Alert } from "@/components/ui/alert";
 
 const CustomerList = () => {
-  const { status, data: customers, error } = useCustomersQuery();
+  const { isPending, data: customers, error } = useCustomersQuery();
 
   if (error) {
     return <Alert variant="destructive">{error.message}</Alert>;
@@ -17,8 +17,8 @@ const CustomerList = () => {
       </div>
       <DataTable
         columns={customerTableColumns}
-        data={customers}
-        isLoading={status === "pending"}
+        // data={customers}
+        isLoading={isPending}
       />
     </div>
   );

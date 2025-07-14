@@ -1,10 +1,27 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, Globe, Mail, MapPin, Phone, XCircle } from "lucide-react";
-import useCustomerDetailQuery from "@/features/customer/hooks/useCustomerDetailQuery";
 import CustomerCardAction from "./CustomerCardAction";
+import { useCustomerId } from "@/providers/CustomerIdContext";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import customerQueries from "@/features/customer/domain/queries/customerQueries";
+import useRenderCount from "@/hooks/use-render-count";
 
 const CustomerCard = () => {
-  const { data: customer } = useCustomerDetailQuery();
+  const customerId = useCustomerId();
+
+  const { data: customer } = useSuspenseQuery({
+    ...customerQueries.list(),
+    select: (customers) => {
+      const customer = customers.find((c) => c.id === customerId);
+
+      if (!customer) {
+        throw new Error("Customer not found");
+      }
+
+      return customer;
+    },
+  });
+
   return (
     <Card>
       <CardHeader className="flex items-center justify-between">
@@ -45,30 +62,8 @@ const CustomerCard = () => {
         </div>
 
         <div>
-          <h3 className="font-medium">Marketing</h3>
-          {customer.marketingConsent.map(({ type, status }) => {
-            const icon =
-              status === "SUBSCRIBED" ? (
-                <CheckCircle className="h-4 w-4 text-green-600" />
-              ) : (
-                <XCircle className="h-4 w-4 text-muted-foreground" />
-              );
-            const text = `${type} ${status === "SUBSCRIBED" ? "subscribed" : "not subscribed"}`;
-
-            return (
-              <div key={type} className="flex items-center gap-2 mt-1">
-                {icon}
-                <span className="capitalize">{text}</span>
-              </div>
-            );
-          })}
-        </div>
-
-        <div>
           <h3 className="font-medium">Tax details</h3>
-          <div className="flex items-center gap-2 mt-1">
-            <span>{customer.taxExempt ? "Collected" : "Collect tax"}</span>
-          </div>
+          <div className="flex items-center gap-2 mt-1"></div>
         </div>
       </CardContent>
     </Card>

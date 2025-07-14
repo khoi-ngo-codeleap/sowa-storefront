@@ -47,4 +47,4 @@ export interface CustomerDetail {
     sum: number | null;
     count: number;
   }[];
-};
+}

@@ -15,7 +15,7 @@ createRoot(document.getElementById("root")!, {
   // Callback called when React automatically recovers from errors.
   onRecoverableError: Sentry.reactErrorHandler(),
 }).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
+  // <StrictMode>
+  <App />,
+  // </StrictMode>
 );

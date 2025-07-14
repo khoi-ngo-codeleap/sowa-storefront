@@ -23,7 +23,7 @@ const MenuItemLayout: React.FC<{
     <div
       className={cn(
         "relative h-10 py-1.5 px-3 flex items-center gap-2 border rounded-lg overflow-hidden hover:bg-muted",
-        action && "pr-9"
+        action && "pr-9",
       )}
     >
       {icon}

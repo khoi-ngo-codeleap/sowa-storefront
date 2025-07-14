@@ -2,7 +2,7 @@ import { Alert } from "@/components/ui/alert";
 import { useQuery } from "@tanstack/react-query";
 import postQueries from "../domain/queries/postQueries";
 import { Loader, MoreVertical } from "lucide-react";
-import { memo, PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import { ListItem } from "@/types/common";
 import { getFeaturedPost } from "../domain/queries/getFeaturedPost";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,8 +18,8 @@ import FormattedTime from "@/components/FormattedTime";
 import { usePostModal } from "../states/modal";
 import supabase from "@/api/client/supabase";
 import { RealtimeChannel } from "@supabase/supabase-js";
-import { channel } from "diagnostics_channel";
 import queryClient from "@/configs/queryClient";
+import useRenderCount from "@/hooks/use-render-count";
 
 function LoadingContainer({
   loading,
@@ -65,7 +65,30 @@ function PostCardAction({ post }: PostCardProps) {
   );
 }
 
-const PostCard = memo(({ post }: PostCardProps) => {
+const PostCard = ({ id }: { id: string }) => {
+  const renderCount = useRenderCount();
+
+  console.log("PostCard render count: ", renderCount, "for id:", id);
+
+  const { data: post } = useQuery({
+    ...postQueries.list(),
+    select: (posts) => {
+      const post = posts.find((p) => p.id === id);
+
+      if (!post) {
+        throw new Error("Post not found");
+      }
+
+      return post;
+    },
+  });
+
+
+  // This should not happen, just here for typescript.
+  if (!post) {
+    return null;
+  }
+
   return (
     <Card className="relative w-full">
       <CardHeader className="flex flex-row items-start justify-between">
@@ -90,7 +113,7 @@ const PostCard = memo(({ post }: PostCardProps) => {
       </CardContent>
     </Card>
   );
-});
+};
 
 function FeatureNote() {
   return (
@@ -132,7 +155,16 @@ function FeatureNote() {
 }
 
 export default function PostList() {
-  const { status, data: posts = [], error } = useQuery(postQueries.list());
+  const {
+    status,
+    data: posts = [],
+    error,
+  } = useQuery({
+    ...postQueries.list(),
+    select: (posts) => {
+      return posts.map((post) => post.id);
+    },
+  });
 
   useEffect(() => {
     let postChannel: RealtimeChannel;
@@ -162,18 +194,25 @@ export default function PostList() {
               } as ListItem<Awaited<ReturnType<typeof getFeaturedPost>>>;
 
               queryClient.setQueryData(postQueries.list().queryKey, (posts) =>
-                posts?.map((post) => (post.id === newPost.id ? newPost : post))
+                posts?.map((post) => (post.id === newPost.id ? newPost : post)),
               );
             }
 
             console.log(payload, ...args);
-          }
+          },
         );
         postChannel.subscribe();
       }
     }
 
     subscribeChanges();
+
+    // Cleanup function to unsubscribe from the channel when the component unmounts
+    return () => {
+      if (postChannel) {
+        postChannel.unsubscribe();
+      }
+    };
   }, []);
 
   if (error) {
@@ -189,7 +228,7 @@ export default function PostList() {
         <div className="flex-1 flex flex-col gap-3">
           <LoadingContainer loading={status === "pending"}>
             {posts.map((post) => (
-              <PostCard key={post.id} post={post} />
+              <PostCard key={post} id={post} />
             ))}
           </LoadingContainer>
         </div>

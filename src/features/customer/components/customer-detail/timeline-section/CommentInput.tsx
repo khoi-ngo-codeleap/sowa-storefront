@@ -32,7 +32,7 @@ const CommentInput = () => {
       },
       {
         onSuccess: () => setComment(""),
-      }
+      },
     );
   };
 

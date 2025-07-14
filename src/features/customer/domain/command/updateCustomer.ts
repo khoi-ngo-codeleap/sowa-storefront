@@ -29,7 +29,7 @@ export const updateCustomer = async ({
         formattedArea:formatted_area,
         country
       ),
-      orderAggregate:customer_order(id.count(), price.sum())`
+      orderAggregate:customer_order(id.count(), price.sum())`,
     )
     .single()
     .throwOnError();

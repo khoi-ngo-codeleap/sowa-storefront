@@ -20,7 +20,7 @@ export const getCustomerLastOrder = async ({
       createdAt:created_at,
       product(
         name
-      )`
+      )`,
     )
     .eq("customer_id", id)
     .order("created_at", { ascending: false })

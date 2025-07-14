@@ -53,7 +53,7 @@ const PostForm: React.FC<PostFormProps> = ({ post, onCompleted }) => {
           id: post.id,
           updateSet: values,
         },
-        { onSuccess: onCompleted }
+        { onSuccess: onCompleted },
       );
     }
   };

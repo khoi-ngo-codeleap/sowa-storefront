@@ -10,11 +10,8 @@ export default function useUpdatePost() {
     },
     mutationFn: updatePost,
     onSuccess: (data) => {
-      /**
-       * ✅ We can update the customer query cache quite simply and directly — it's not as hard as you might think.
-       */
       queryClient.setQueryData(postQueries.list().queryKey, (posts) =>
-        posts?.map((post) => (post.id === data.id ? data : post))
+        posts?.map((post) => (post.id === data.id ? data : post)),
       );
     },
   });

@@ -60,7 +60,7 @@ export const LanguageProvider: FC<PropsWithChildren> = ({ children }) => {
         setLocale(locale);
       },
     }),
-    []
+    [],
   );
 
   return (

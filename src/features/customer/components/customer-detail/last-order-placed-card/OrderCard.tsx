@@ -67,7 +67,7 @@ const OrderCard = () => {
               <p>
                 $
                 {Math.trunc(
-                  ((data.price * (1 - data.tax)) / data.quantity) * 100
+                  ((data.price * (1 - data.tax)) / data.quantity) * 100,
                 ) / 100}
               </p>
             </div>
