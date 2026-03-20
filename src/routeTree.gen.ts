@@ -8,352 +8,113 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as DemoRouteImport } from './routes/demo'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as DemoIndexRouteImport } from './routes/demo/index'
+import { Route as DemoBottomSheetRouteImport } from './routes/demo/bottom-sheet'
 
-// Import Routes
-
-import { Route as rootRoute } from './routes/__root'
-import { Route as ProtectedImport } from './routes/_protected'
-import { Route as AuthImport } from './routes/_auth'
-import { Route as IndexImport } from './routes/index'
-import { Route as ProtectedPlaygroundImport } from './routes/_protected/playground'
-import { Route as AuthSigninImport } from './routes/_auth/signin'
-import { Route as ProtectedManifestoIndexImport } from './routes/_protected/manifesto/index'
-import { Route as ProtectedCustomersIndexImport } from './routes/_protected/customers/index'
-import { Route as ProtectedCustomersCustomerIdImport } from './routes/_protected/customers/$customerId'
-import { Route as ProtectedCustomersNewIndexImport } from './routes/_protected/customers/new/index'
-
-// Create Virtual Routes
-
-const ProtectedAboutLazyImport = createFileRoute('/_protected/about')()
-
-// Create/Update Routes
-
-const ProtectedRoute = ProtectedImport.update({
-  id: '/_protected',
-  getParentRoute: () => rootRoute,
+const DemoRoute = DemoRouteImport.update({
+  id: '/demo',
+  path: '/demo',
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AuthRoute = AuthImport.update({
-  id: '/_auth',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoIndexRoute = DemoIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DemoRoute,
+} as any)
+const DemoBottomSheetRoute = DemoBottomSheetRouteImport.update({
+  id: '/bottom-sheet',
+  path: '/bottom-sheet',
+  getParentRoute: () => DemoRoute,
 } as any)
 
-const ProtectedAboutLazyRoute = ProtectedAboutLazyImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => ProtectedRoute,
-} as any).lazy(() =>
-  import('./routes/_protected/about.lazy').then((d) => d.Route),
-)
-
-const ProtectedPlaygroundRoute = ProtectedPlaygroundImport.update({
-  id: '/playground',
-  path: '/playground',
-  getParentRoute: () => ProtectedRoute,
-} as any)
-
-const AuthSigninRoute = AuthSigninImport.update({
-  id: '/signin',
-  path: '/signin',
-  getParentRoute: () => AuthRoute,
-} as any)
-
-const ProtectedManifestoIndexRoute = ProtectedManifestoIndexImport.update({
-  id: '/manifesto/',
-  path: '/manifesto/',
-  getParentRoute: () => ProtectedRoute,
-} as any)
-
-const ProtectedCustomersIndexRoute = ProtectedCustomersIndexImport.update({
-  id: '/customers/',
-  path: '/customers/',
-  getParentRoute: () => ProtectedRoute,
-} as any)
-
-const ProtectedCustomersCustomerIdRoute =
-  ProtectedCustomersCustomerIdImport.update({
-    id: '/customers/$customerId',
-    path: '/customers/$customerId',
-    getParentRoute: () => ProtectedRoute,
-  } as any)
-
-const ProtectedCustomersNewIndexRoute = ProtectedCustomersNewIndexImport.update(
-  {
-    id: '/customers/new/',
-    path: '/customers/new/',
-    getParentRoute: () => ProtectedRoute,
-  } as any,
-)
-
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/demo': typeof DemoRouteWithChildren
+  '/demo/bottom-sheet': typeof DemoBottomSheetRoute
+  '/demo/': typeof DemoIndexRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/demo/bottom-sheet': typeof DemoBottomSheetRoute
+  '/demo': typeof DemoIndexRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/demo': typeof DemoRouteWithChildren
+  '/demo/bottom-sheet': typeof DemoBottomSheetRoute
+  '/demo/': typeof DemoIndexRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/demo' | '/demo/bottom-sheet' | '/demo/'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/demo/bottom-sheet' | '/demo'
+  id: '__root__' | '/' | '/demo' | '/demo/bottom-sheet' | '/demo/'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  DemoRoute: typeof DemoRouteWithChildren
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/demo': {
+      id: '/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof DemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_auth': {
-      id: '/_auth'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthImport
-      parentRoute: typeof rootRoute
+    '/demo/': {
+      id: '/demo/'
+      path: '/'
+      fullPath: '/demo/'
+      preLoaderRoute: typeof DemoIndexRouteImport
+      parentRoute: typeof DemoRoute
     }
-    '/_protected': {
-      id: '/_protected'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof ProtectedImport
-      parentRoute: typeof rootRoute
-    }
-    '/_auth/signin': {
-      id: '/_auth/signin'
-      path: '/signin'
-      fullPath: '/signin'
-      preLoaderRoute: typeof AuthSigninImport
-      parentRoute: typeof AuthImport
-    }
-    '/_protected/playground': {
-      id: '/_protected/playground'
-      path: '/playground'
-      fullPath: '/playground'
-      preLoaderRoute: typeof ProtectedPlaygroundImport
-      parentRoute: typeof ProtectedImport
-    }
-    '/_protected/about': {
-      id: '/_protected/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof ProtectedAboutLazyImport
-      parentRoute: typeof ProtectedImport
-    }
-    '/_protected/customers/$customerId': {
-      id: '/_protected/customers/$customerId'
-      path: '/customers/$customerId'
-      fullPath: '/customers/$customerId'
-      preLoaderRoute: typeof ProtectedCustomersCustomerIdImport
-      parentRoute: typeof ProtectedImport
-    }
-    '/_protected/customers/': {
-      id: '/_protected/customers/'
-      path: '/customers'
-      fullPath: '/customers'
-      preLoaderRoute: typeof ProtectedCustomersIndexImport
-      parentRoute: typeof ProtectedImport
-    }
-    '/_protected/manifesto/': {
-      id: '/_protected/manifesto/'
-      path: '/manifesto'
-      fullPath: '/manifesto'
-      preLoaderRoute: typeof ProtectedManifestoIndexImport
-      parentRoute: typeof ProtectedImport
-    }
-    '/_protected/customers/new/': {
-      id: '/_protected/customers/new/'
-      path: '/customers/new'
-      fullPath: '/customers/new'
-      preLoaderRoute: typeof ProtectedCustomersNewIndexImport
-      parentRoute: typeof ProtectedImport
+    '/demo/bottom-sheet': {
+      id: '/demo/bottom-sheet'
+      path: '/bottom-sheet'
+      fullPath: '/demo/bottom-sheet'
+      preLoaderRoute: typeof DemoBottomSheetRouteImport
+      parentRoute: typeof DemoRoute
     }
   }
 }
 
-// Create and export the route tree
-
-interface AuthRouteChildren {
-  AuthSigninRoute: typeof AuthSigninRoute
+interface DemoRouteChildren {
+  DemoBottomSheetRoute: typeof DemoBottomSheetRoute
+  DemoIndexRoute: typeof DemoIndexRoute
 }
 
-const AuthRouteChildren: AuthRouteChildren = {
-  AuthSigninRoute: AuthSigninRoute,
+const DemoRouteChildren: DemoRouteChildren = {
+  DemoBottomSheetRoute: DemoBottomSheetRoute,
+  DemoIndexRoute: DemoIndexRoute,
 }
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
-
-interface ProtectedRouteChildren {
-  ProtectedPlaygroundRoute: typeof ProtectedPlaygroundRoute
-  ProtectedAboutLazyRoute: typeof ProtectedAboutLazyRoute
-  ProtectedCustomersCustomerIdRoute: typeof ProtectedCustomersCustomerIdRoute
-  ProtectedCustomersIndexRoute: typeof ProtectedCustomersIndexRoute
-  ProtectedManifestoIndexRoute: typeof ProtectedManifestoIndexRoute
-  ProtectedCustomersNewIndexRoute: typeof ProtectedCustomersNewIndexRoute
-}
-
-const ProtectedRouteChildren: ProtectedRouteChildren = {
-  ProtectedPlaygroundRoute: ProtectedPlaygroundRoute,
-  ProtectedAboutLazyRoute: ProtectedAboutLazyRoute,
-  ProtectedCustomersCustomerIdRoute: ProtectedCustomersCustomerIdRoute,
-  ProtectedCustomersIndexRoute: ProtectedCustomersIndexRoute,
-  ProtectedManifestoIndexRoute: ProtectedManifestoIndexRoute,
-  ProtectedCustomersNewIndexRoute: ProtectedCustomersNewIndexRoute,
-}
-
-const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
-  ProtectedRouteChildren,
-)
-
-export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '': typeof ProtectedRouteWithChildren
-  '/signin': typeof AuthSigninRoute
-  '/playground': typeof ProtectedPlaygroundRoute
-  '/about': typeof ProtectedAboutLazyRoute
-  '/customers/$customerId': typeof ProtectedCustomersCustomerIdRoute
-  '/customers': typeof ProtectedCustomersIndexRoute
-  '/manifesto': typeof ProtectedManifestoIndexRoute
-  '/customers/new': typeof ProtectedCustomersNewIndexRoute
-}
-
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof ProtectedRouteWithChildren
-  '/signin': typeof AuthSigninRoute
-  '/playground': typeof ProtectedPlaygroundRoute
-  '/about': typeof ProtectedAboutLazyRoute
-  '/customers/$customerId': typeof ProtectedCustomersCustomerIdRoute
-  '/customers': typeof ProtectedCustomersIndexRoute
-  '/manifesto': typeof ProtectedManifestoIndexRoute
-  '/customers/new': typeof ProtectedCustomersNewIndexRoute
-}
-
-export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/_auth': typeof AuthRouteWithChildren
-  '/_protected': typeof ProtectedRouteWithChildren
-  '/_auth/signin': typeof AuthSigninRoute
-  '/_protected/playground': typeof ProtectedPlaygroundRoute
-  '/_protected/about': typeof ProtectedAboutLazyRoute
-  '/_protected/customers/$customerId': typeof ProtectedCustomersCustomerIdRoute
-  '/_protected/customers/': typeof ProtectedCustomersIndexRoute
-  '/_protected/manifesto/': typeof ProtectedManifestoIndexRoute
-  '/_protected/customers/new/': typeof ProtectedCustomersNewIndexRoute
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | ''
-    | '/signin'
-    | '/playground'
-    | '/about'
-    | '/customers/$customerId'
-    | '/customers'
-    | '/manifesto'
-    | '/customers/new'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | ''
-    | '/signin'
-    | '/playground'
-    | '/about'
-    | '/customers/$customerId'
-    | '/customers'
-    | '/manifesto'
-    | '/customers/new'
-  id:
-    | '__root__'
-    | '/'
-    | '/_auth'
-    | '/_protected'
-    | '/_auth/signin'
-    | '/_protected/playground'
-    | '/_protected/about'
-    | '/_protected/customers/$customerId'
-    | '/_protected/customers/'
-    | '/_protected/manifesto/'
-    | '/_protected/customers/new/'
-  fileRoutesById: FileRoutesById
-}
-
-export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRouteWithChildren
-  ProtectedRoute: typeof ProtectedRouteWithChildren
-}
+const DemoRouteWithChildren = DemoRoute._addFileChildren(DemoRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthRoute: AuthRouteWithChildren,
-  ProtectedRoute: ProtectedRouteWithChildren,
+  DemoRoute: DemoRouteWithChildren,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/_auth",
-        "/_protected"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/_auth": {
-      "filePath": "_auth.tsx",
-      "children": [
-        "/_auth/signin"
-      ]
-    },
-    "/_protected": {
-      "filePath": "_protected.tsx",
-      "children": [
-        "/_protected/playground",
-        "/_protected/about",
-        "/_protected/customers/$customerId",
-        "/_protected/customers/",
-        "/_protected/manifesto/",
-        "/_protected/customers/new/"
-      ]
-    },
-    "/_auth/signin": {
-      "filePath": "_auth/signin.tsx",
-      "parent": "/_auth"
-    },
-    "/_protected/playground": {
-      "filePath": "_protected/playground.tsx",
-      "parent": "/_protected"
-    },
-    "/_protected/about": {
-      "filePath": "_protected/about.lazy.tsx",
-      "parent": "/_protected"
-    },
-    "/_protected/customers/$customerId": {
-      "filePath": "_protected/customers/$customerId.tsx",
-      "parent": "/_protected"
-    },
-    "/_protected/customers/": {
-      "filePath": "_protected/customers/index.tsx",
-      "parent": "/_protected"
-    },
-    "/_protected/manifesto/": {
-      "filePath": "_protected/manifesto/index.tsx",
-      "parent": "/_protected"
-    },
-    "/_protected/customers/new/": {
-      "filePath": "_protected/customers/new/index.tsx",
-      "parent": "/_protected"
-    }
-  }
-}
-ROUTE_MANIFEST_END */
